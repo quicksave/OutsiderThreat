@@ -1,4 +1,6 @@
 /*
+I lied. Failed to properly set a second player's position at spawn, content missing/deleted errors. SP concept functions.
+
 STAVROS DOCUMENTS MOSCOW FILE RIPOFF
 Put 0 = (position this) execVM "stavros.sqf" in init of an object, I used a Logic, set placement radius to taste.
 Ensure all BLUFOR are grouped with the player unit.
