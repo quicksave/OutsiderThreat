@@ -10,6 +10,7 @@ sleep 1;
 
 Ensure all BLUFOR are grouped with the player unit, there is no limit
 */
+
 if (!isServer) exitWith {};
 
 enableSaving [false, false];
@@ -24,6 +25,9 @@ _target setMarkerColor "ColorRed";
 _side = createCenter east;
 _bluforside = createCenter west;
 _group1= createGroup east; _group2 = createGroup east; _group3 = createGroup east;
+_groupblue = createGroup west;
+waitUntil{!isNull player};
+units group player join _groupblue;
 
 _group1= [_spawnPos , east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
 _null = _group1 setCombatMode "RED";
@@ -39,28 +43,24 @@ _null = _group2 setFormation "STAG COLUMN";
 _null = _group2 setBehaviour "SAFE";
 [_group2,_spawnPos,200] call CBA_fnc_taskPatrol;
 
-groupblue = createGroup west;
-waitUntil{!isNull player};
-units group player join groupblue;
-
 //-	teleport groupblue to a 'safe' position approx 600m away from the objective in a random direction; copied from Moscow File Blue, slightly modified:
-safe = false;
-startDir = 0;
-startPos = _spawnPos;
-while {!safe} do
+_safe = false;
+_startDir = 0;
+_startPos = _spawnPos;
+while {!_safe} do
 {
 	_startDistance = 575 + random 50;
-	startDir = random 360;
-	startPos = [(_spawnPos select 0) + _startDistance * (sin (startDir + 180)),(_spawnPos select 1) + _startdistance * (cos (startDir + 180))];
-	startPos = [startPos, 0, 70, 0, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
+	_startDir = random 360;
+	_startPos = [(_spawnPos select 0) + _startDistance * (sin (_startDir + 180)),(_spawnPos select 1) + _startdistance * (cos (_startDir + 180))];
+	_startPos = [_startPos, 0, 70, 0, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
 
-	if ((startPos select 0) != 1) then
+	if ((_startPos select 0) != 1) then
 	{
-		safe=true;
+		_safe=true;
 	};	
 };
 
-[[[startPos, startDir, groupblue],{ 
+[[[_startPos, _startDir, _groupblue],{ 
 	_pos = (_this select 0);
 
 	{
@@ -72,22 +72,22 @@ while {!safe} do
 }], "BIS_fnc_spawn", true, false, true] spawn BIS_fnc_MP;
 //-
 
-waitUntil{sleep 1; !alive Stavros};
+waitUntil{sleep 1; !alive _stavros};
 
-gotintel = false;
-Stavros addAction ["Take Documents", {gotintel = true; Stavros removeAction 0;}, "", 5]; // use stavros' corpse to complete the objective
+_gotintel = false;
+_stavros addAction ["Take Documents", {_gotintel = true; _stavros removeAction 0;}, "", 5]; // use stavros' corpse to complete the objective
 
-waitUntil{gotintel};
+waitUntil{_gotintel};
 
-trgpos = getPos Stavros;
-endtrg = createTrigger ["EmptyDetector", trgpos];	// used to count units in groupblue and detect escape for mission end
-endtrg setTriggerArea [200, 200, 0, false];
-endtrg setTriggerActivation ["ANY","NOT PRESENT",false];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
-endtrg setTriggerStatements ["this", "", ""];
+_trgpos = getPos _stavros;
+_endtrg = createTrigger ["EmptyDetector", _trgpos];	// use trigger array to count units in groupblue and detect escape for mission end
+_endtrg setTriggerArea [200, 200, 0, false];
+_endtrg setTriggerActivation ["ANY","PRESENT",true];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
+_endtrg setTriggerStatements ["this", "sleep 10;", ""];
 
-waitUntil{sleep 1; ({group _x == groupblue}count list endtrg) < 1}; // no living units in groupblue are within 200m of stavros' body, mission will end
+waitUntil{sleep 1; ({group _x == _groupblue}count list _endtrg) < 1}; // no living units in groupblue are within 200m of stavros' body, mission will end
 
-if (count (groupblue call CBA_fnc_getAlive) > 0) then {
+if (count (_groupblue call CBA_fnc_getAlive) > 0) then {
 	["", true, true] call BIS_fnc_endMission;
 } else {
 	["", false, true] call BIS_fnc_endMission;
