@@ -11,8 +11,6 @@ sleep 1;
 Ensure all BLUFOR are grouped with the player unit, there is no limit
 */
 
-if (!isServer) exitWith {};
-
 enableSaving [false, false];
 enableSentences false;
 
@@ -35,7 +33,28 @@ _null = _group1 setCombatMode "RED";
 [_group1,_spawnPos,30, 2, true] call CBA_fnc_taskDefend; //Switch to BIS to remove CBA requirement.
 
 _stavros = "O_officer_F" createUnit [_spawnPos, _group3, "Stavros = this;", 0.5, "PRIVATE"];
-[_group1,_spawnPos,5, 3, false] call CBA_fnc_taskDefend; 
+
+_endtrg = 0;
+if (isServer){
+	_null = _stavros addMPEventHandler
+	["MPKilled", {
+		_null = _this addAction 
+		["Take Documents", {	hint "taken";
+			/*[[[(getPos _this)],{
+			
+				_endtrg = createTrigger ["EmptyDetector", _this select 0];	// use trigger array to count units in groupblue and detect escape for mission end
+				_endtrg setTriggerArea [200, 200, 0, false];
+				_endtrg setTriggerActivation ["ANY","PRESENT",true];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
+				_endtrg setTriggerStatements ["this", "sleep 10;", ""];
+
+			}], "BIS_fnc_spawn", false, false, false] spawn BIS_fnc_MP;
+			_stavros removeAction 0;
+			_stavros removeAllMPEventHandlers "MPKilled";*/
+		}, "", 5];
+	}];
+};
+
+[_group1,_spawnPos,5, 3, false] call CBA_fnc_taskDefend;
 
 _group2= [_spawnPos, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
 _null = _group2 setSpeedMode "LIMITED";
@@ -71,19 +90,22 @@ while {!_safe} do
 
 }], "BIS_fnc_spawn", true, false, true] spawn BIS_fnc_MP;
 //-
-
+/*
 waitUntil{sleep 1; !alive _stavros};
 
 _gotintel = false;
 _stavros addAction ["Take Documents", {_gotintel = true; _stavros removeAction 0;}, "", 5]; // use stavros' corpse to complete the objective
 
-waitUntil{_gotintel};
+waitUntil{sleep 1; _gotintel};
 
-_trgpos = getPos _stavros;
-_endtrg = createTrigger ["EmptyDetector", _trgpos];	// use trigger array to count units in groupblue and detect escape for mission end
-_endtrg setTriggerArea [200, 200, 0, false];
-_endtrg setTriggerActivation ["ANY","PRESENT",true];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
-_endtrg setTriggerStatements ["this", "sleep 10;", ""];
+if (isServer){
+	_trgpos = getPos _stavros;
+	_endtrg = createTrigger ["EmptyDetector", _trgpos];	// use trigger array to count units in groupblue and detect escape for mission end
+	_endtrg setTriggerArea [200, 200, 0, false];
+	_endtrg setTriggerActivation ["ANY","PRESENT",true];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
+	_endtrg setTriggerStatements ["this", "sleep 10;", ""];
+};
+*/
 
 waitUntil{sleep 1; ({group _x == _groupblue}count list _endtrg) < 1}; // no living units in groupblue are within 200m of stavros' body, mission will end
 

@@ -3,6 +3,11 @@
 
 sleep 1;
 
-logics = list trig1;
+logics = 
+{
+	if (typeOf _x == "Land_Pneu"){  };
+	
+}foreach list trig1;
+
 deletevehicle trig1;
 (position (logics select floor random count logics)) execVM "stavros.sqf";
