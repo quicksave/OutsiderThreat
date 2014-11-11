@@ -5,7 +5,10 @@ sleep 1;
 
 logics = 
 {
-	if (typeOf _x == "Land_Pneu"){  };
+	if (typeOf _x == "HeliHEmpty")
+	{ 
+		logics = logics + [_x];
+	};
 	
 }foreach list trig1;
 
