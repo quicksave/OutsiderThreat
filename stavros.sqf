@@ -1,14 +1,19 @@
 /*
 STAVROS DOCUMENTS MOSCOW FILE RIPOFF
 
-Create gamelogic objects near any buildings you want to be eligible as an objective site
-Place a gamelogic trigger with a radius large enough to include all the gamelogic objects, name it trig1
-Put the following lines in init.sqf, the sleep isn't needed if you already have one before the execVM:
+Create Land_Pliers_F objects near any buildings you want to be eligible as an objective site
+Place an ANY trigger with a radius large enough to include all the Land_Pliers_F objects, name it trig1
+Put the following lines in init.sqf, the sleep isn't needed if you already have one
 
 sleep 1;
-(position (list trig1 select floor random count list trig1)) execVM "stavros.sqf";
+pliers = [];
+{
+	if (typeOf _x == "Land_Pliers_F") then {pliers = pliers + [_x];};	
+}foreach list trig1;
+deletevehicle trig1;
+(position (pliers select floor random count pliers)) execVM "stavros.sqf";
 
-Ensure all BLUFOR are grouped with the player unit, there is no limit
+Ensure all BLUFOR are grouped with the player unit
 */
 
 enableSaving [false, false];
@@ -32,15 +37,15 @@ _null = _group1 setCombatMode "RED";
 {_x allowFleeing 0} forEach units _group1;
 [_group1,_spawnPos,30, 2, true] call CBA_fnc_taskDefend; //Switch to BIS to remove CBA requirement.
 
-_stavros = "O_officer_F" createUnit [_spawnPos, _group3, "Stavros = this;", 0.5, "PRIVATE"];
+ron = "O_officer_F" createUnit [_spawnPos, _group3, "", 0.5, "PRIVATE"];
 
-_endtrg = 0;
-if (isServer){
-	_null = _stavros addMPEventHandler
+_endtrig = []; //needs to be defined before mission end waitUntil
+if (isServer) then {
+	_null = ron addMPEventHandler // arma keeps telling me ron is undefined here
 	["MPKilled", {
 		_null = _this addAction 
 		["Take Documents", {	hint "taken";
-			/*[[[(getPos _this)],{
+			[[[(getPos _this)],{
 			
 				_endtrg = createTrigger ["EmptyDetector", _this select 0];	// use trigger array to count units in groupblue and detect escape for mission end
 				_endtrg setTriggerArea [200, 200, 0, false];
@@ -48,8 +53,8 @@ if (isServer){
 				_endtrg setTriggerStatements ["this", "sleep 10;", ""];
 
 			}], "BIS_fnc_spawn", false, false, false] spawn BIS_fnc_MP;
-			_stavros removeAction 0;
-			_stavros removeAllMPEventHandlers "MPKilled";*/
+			ron removeAction 0;
+			ron removeAllMPEventHandlers "MPKilled";
 		}, "", 5];
 	}];
 };
@@ -90,24 +95,8 @@ while {!_safe} do
 
 }], "BIS_fnc_spawn", true, false, true] spawn BIS_fnc_MP;
 //-
-/*
-waitUntil{sleep 1; !alive _stavros};
-
-_gotintel = false;
-_stavros addAction ["Take Documents", {_gotintel = true; _stavros removeAction 0;}, "", 5]; // use stavros' corpse to complete the objective
-
-waitUntil{sleep 1; _gotintel};
-
-if (isServer){
-	_trgpos = getPos _stavros;
-	_endtrg = createTrigger ["EmptyDetector", _trgpos];	// use trigger array to count units in groupblue and detect escape for mission end
-	_endtrg setTriggerArea [200, 200, 0, false];
-	_endtrg setTriggerActivation ["ANY","PRESENT",true];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
-	_endtrg setTriggerStatements ["this", "sleep 10;", ""];
-};
-*/
-
-waitUntil{sleep 1; ({group _x == _groupblue}count list _endtrg) < 1}; // no living units in groupblue are within 200m of stavros' body, mission will end
+														//arma also thinks _endtrig is undefined
+waitUntil{sleep 1; ({group _x == _groupblue}count list _endtrg) < 1}; // no living units in groupblue are within 200m of ron's body, mission will end
 
 if (count (_groupblue call CBA_fnc_getAlive) > 0) then {
 	["", true, true] call BIS_fnc_endMission;
