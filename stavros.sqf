@@ -50,9 +50,8 @@ _null = _group2 setBehaviour "SAFE";
 "O_officer_F" createUnit [_spawnPos, _group3, "ron = this; this allowFleeing 0;", 0.5, "PRIVATE"];
 [ron] spawn CBA_fnc_searchNearby; 
 
-//endtrg = object; //needs to be defined before mission end waitUntil
 if (isServer) then {
-	ron addMPEventHandler // arma keeps telling me ron is undefined here
+	ron addMPEventHandler
 	["MPKilled", {
 		_this select 0 addAction 
 		["Take Documents", {
