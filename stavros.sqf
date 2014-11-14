@@ -13,42 +13,54 @@ pliers = [];
 deletevehicle trig1;
 (position (pliers select floor random count pliers)) execVM "stavros.sqf";
 
-Ensure all BLUFOR are grouped with the player unit
+Ensure all BLUFOR are grouped with the blueman unit
 
-Not tracking unit that performed the addaction, their survival/escape isn't required. don't want to do it but i guess i will. the mpkilled EH with addaction will be placed on whoever used it last.
-need to test new spawnpos w/ findsafepos thoroughly, using it as a measure against units getting stuck in/under the floor
+Not tracking unit that performed the addaction, their survival/escape isn't required. 
+don't want to do it but i guess i will. the mpkilled EH with addaction will be placed on whoever used it last.
 */
 
 enableSaving [false, false];
 enableSentences false;
 
-_spawnPos = [position nearestBuilding _this, 0, 70, 0, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
-_target = createMarker["Target", _spawnPos];
-_target setMarkerType "mil_destroy";
-_target setMarkerShape "ICON";
+_spawnPos = [position nearestBuilding _this, 0, 50, 1, 0, 1, 0] call BIS_fnc_findSafePos;
+_target = createMarker["Target", position nearestBuilding _this];
+_target setMarkerSize [200, 200];
+_target setMarkerShape "ELLIPSE";
+_target setMarkerBrush "Border";
 _target setMarkerColor "ColorRed";
+_target setMarkerAlpha 1;
+/*
+_targetpin = createMarker["Targetpin", position nearestBuilding _this];
+_targetpin setMarkerSize [50, 50];
+_targetpin setMarkerShape "ELLIPSE";
+//_targetpin setMarkerType "mil_destroy";
+//_targetpin setMarkerShape "ICON";
+_targetpin setMarkerColor "ColorRed";
+_targetpin setMarkerAlpha 0.3;
+*/
 
 _side = createCenter east;
 _bluforside = createCenter west;
 _group1= createGroup east; _group2 = createGroup east; _group3 = createGroup east;
 
 groupblue = createGroup west;
+unitsblue join groupblue;
 waitUntil{!isNull player};
-units group player join groupblue;
 
 _group1= [_spawnPos , east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
 _null = _group1 setCombatMode "RED";
 {_x allowFleeing 0} forEach units _group1;
-[_group1,_spawnPos,30, 2, true] call CBA_fnc_taskDefend; //Switch to BIS to remove CBA requirement.
+[_group1,position nearestBuilding _this,50, 2, true] call CBA_fnc_taskDefend; //Switch to BIS to remove CBA requirement.
 
 _group2= [_spawnPos, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
 _null = _group2 setSpeedMode "LIMITED";
 _null = _group2 setFormation "STAG COLUMN";
 _null = _group2 setBehaviour "SAFE";
-[_group2,_spawnPos,200] call CBA_fnc_taskPatrol;
+[_group2,position nearestBuilding _this,200] call CBA_fnc_taskPatrol;
 
 "O_officer_F" createUnit [_spawnPos, _group3, "ron = this; this allowFleeing 0;", 0.5, "PRIVATE"];
-[ron] spawn CBA_fnc_searchNearby; 
+"O_Soldier_lite_F" createUnit [_spawnPos, _group3, "ron = this; this allowFleeing 0;", 0.5, "PRIVATE"];
+[_group3,position nearestBuilding _this,5, 2, false] call CBA_fnc_taskDefend;
 
 if (isServer) then {
 	ron addMPEventHandler
@@ -88,7 +100,7 @@ while {!_safe} do
 	_startDistance = 575 + random 50;
 	_startDir = random 360;
 	_startPos = [(_spawnPos select 0) + _startDistance * (sin (_startDir + 180)),(_spawnPos select 1) + _startdistance * (cos (_startDir + 180))];
-	_startPos = [_startPos, 0, 70, 0, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
+	_startPos = [_startPos, 0, 50, 1, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
 
 	if ((_startPos select 0) != 1) then
 	{
@@ -106,4 +118,3 @@ while {!_safe} do
 	} forEach units (_this select 2);
 
 }], "BIS_fnc_spawn", true, false, true] spawn BIS_fnc_MP;
-//-
