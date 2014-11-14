@@ -59,7 +59,7 @@ _null = _group2 setBehaviour "SAFE";
 [_group2,position nearestBuilding _this,200] call CBA_fnc_taskPatrol;
 
 "O_officer_F" createUnit [_spawnPos, _group3, "ron = this; this allowFleeing 0;", 0.5, "PRIVATE"];
-"O_Soldier_lite_F" createUnit [_spawnPos, _group3, "ron = this; this allowFleeing 0;", 0.5, "PRIVATE"];
+"O_Soldier_lite_F" createUnit [_spawnPos, _group3, "this allowFleeing 0;", 0.5, "PRIVATE"];
 [_group3,position nearestBuilding _this,5, 2, false] call CBA_fnc_taskDefend;
 
 if (isServer) then {
@@ -77,15 +77,19 @@ if (isServer) then {
 				waitUntil{sleep 5; ({group _x == groupblue}count list endtrg) < 1}; // no living units in groupblue are within 200m of ron's body, mission will end
 
 				if (count (groupblue call CBA_fnc_getAlive) > 0) then {
-					["", true, true] call BIS_fnc_endMission;
+				
+					[[[],{["", true, true] call BIS_fnc_endMission;}], "BIS_fnc_spawn", true, false, false] spawn BIS_fnc_MP;
+				
 				} else {
-					["", false, true] call BIS_fnc_endMission;
+					[[[],{["", false, true] call BIS_fnc_endMission;}], "BIS_fnc_spawn", true, false, false] spawn BIS_fnc_MP;
 				};
 
 
 			}], "BIS_fnc_spawn", false, false, false] spawn BIS_fnc_MP;
-			ron removeAction 0;
-			ron removeAllMPEventHandlers "MPKilled";
+			[[[ron],{
+				ron removeAction 0; 
+				ron removeAllMPEventHandlers "MPKilled";
+			}], "BIS_fnc_spawn", true, false, false] spawn BIS_fnc_MP;
 		}, nil, 5, false, true,"","((_target distance _this) < 2)"];
 	}];
 };
