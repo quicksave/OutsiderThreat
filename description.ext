@@ -1,0 +1,60 @@
+author="jorsh";
+OnLoadName="outsider threat";
+OnLoadMission="THIS ONE'S SIMPLE GANG, A CLASSIC KNOCKOVER.";
+
+saving = 0;
+
+enableDebugConsole = 1;
+
+class Params
+{
+	class Difficulty
+	{
+		title = "Difficulty: Select number of players.";
+		values[] = {4, 8, 12, 24};
+		texts[] = {"4", "8", "12", "24"};
+		default = 1;
+	};
+	class PlayerFaction
+	{
+		title = "Desired player faction (COMING SOON):";
+		values[] = {1, 2, 3, 4};
+		texts[] = {"'MURICA FUCK YEAH", "Ah, Motherland!", "Best Korea", "Nasheed n' Weed"};
+		default = 1;
+	};
+};
+
+class CfgDebriefing
+{  
+	class END1
+	{
+		title = "mission complete";
+		subtitle = "";
+		description = "";
+		pictureBackground = "";
+		picture = "";
+		pictureColor[] = {1,1,1,1};
+	};
+	class LOSER
+	{
+		title = "mission failed";
+		subtitle = "you are kill";
+		description = "";
+		pictureBackground = "";
+		picture = "";
+		pictureColor[] = {0.6,0.1,0.2,1};
+	};
+};
+
+class CfgNotifications
+{
+		class TaskSucceeded
+	{
+		title = "%1";
+		iconPicture = "\A3\ui_f\data\map\mapcontrol\taskIcondone_ca.paa";
+		color[] = {0.600000,0.839215,0.466666,1};
+		description = "%2";
+		priority = 4;
+	};
+	
+};
