@@ -1,7 +1,6 @@
 execVM "briefing.sqf";
 sleep 1;
 
-if (!isserver) exitwith {};
 pliers = [];
 unitsblue = [];
 {

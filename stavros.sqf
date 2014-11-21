@@ -48,12 +48,14 @@ _null = _group2 setBehaviour "SAFE";
 "O_Soldier_lite_F" createUnit [_spawnPos, _group3, "this allowFleeing 0;", 0.5, "PRIVATE"];
 [_group3,position nearestBuilding _this,5, 2, false] call CBA_fnc_taskDefend;
 
+publicVariable "ron";
+
 if (isServer) then {
 	ron addMPEventHandler
-	["MPKilled", {
+	["mpkilled", {
 		[_this select 0] spawn {
 			sleep 5;
-			docs = createMarker["Targetpin", position (_this select 0)];
+			docs = createMarker["Targetpin", position (ron)];
 			docs setMarkerSize [3, 3];
 			docs setMarkerShape "ELLIPSE";
 			docs setMarkerBrush "SolidBorder";

@@ -30,7 +30,7 @@ class Params
 		values[] = {"us", "ru", "nk", "is"};
 		texts[] = {"'MURICA FUCK YEAH", "Ah, Motherland!", "Best Korea", "Nasheed n' Weed"};
 		default = "usa";
-		file = "setPlayerFaction.sqf";
+		//file = "setPlayerFaction.sqf";
 	};
 };
 

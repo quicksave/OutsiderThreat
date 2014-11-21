@@ -5,6 +5,8 @@
 _cre = player createDiaryRecord ["diary", ["Credits","
 jorsh
 <br/><br/>
+hedgehogger for his loadout gen and technical/emotional support
+<br/><br/>
 i copied F3's briefing.sqf i guess (http://www.ferstaberinde.com/f3/en/)
 "]];
 
