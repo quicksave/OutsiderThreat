@@ -1,3 +1,4 @@
+overviewText = "Attack a randomized enemy position, search the courier and exfiltrate.";
 author="jorsh";
 OnLoadName="outsider threat";
 OnLoadMission="THIS ONE IS SIMPLE GANG, A CLASSIC KNOCKOVER";
@@ -5,6 +6,13 @@ OnLoadMission="THIS ONE IS SIMPLE GANG, A CLASSIC KNOCKOVER";
 saving = 0;
 
 enableDebugConsole = 1;
+
+class Header
+{
+	gameType = Coop;
+	minPlayers = 4; 
+	maxPlayers = 24; 
+};
 
 class Params
 {

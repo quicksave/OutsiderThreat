@@ -11,6 +11,15 @@ unitsblue = [];
 		unitsblue = unitsblue + [_x];
 	};	
 }foreach list trig1;
+
 deletevehicle trig1;
 
-(position (pliers select floor random count pliers)) execVM "stavros.sqf";
+ran = -1;
+if (isserver) then {
+	ran = floor random count pliers;
+	waituntil{ran > -1};
+	publicvariable "ran";
+};
+
+waituntil{ran > -1};
+(position (pliers select ran)) execVM "stavros.sqf";

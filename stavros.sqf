@@ -21,7 +21,6 @@ _target setMarkerAlpha 1;
 
 _side = createCenter east;
 _bluforside = createCenter west;
-_group1= createGroup east; _group2 = createGroup east; _group3 = createGroup east;
 
 waitUntil{!isNull player};
 
@@ -33,27 +32,14 @@ task1 = player createSimpleTask ["SecureIntel"];
 task1 setSimpleTaskDescription ["Kill courier and take his shit.", "Find the intel", "Target area"];
 player setCurrentTask task1;
 
-_group1= [_spawnPos , east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
-_null = _group1 setCombatMode "RED";
-{_x allowFleeing 0} forEach units _group1;
-[_group1,position nearestBuilding _this,50, 2, true] call CBA_fnc_taskDefend; //Switch to BIS to remove CBA requirement.
-
-_group2= [_spawnPos, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
-_null = _group2 setSpeedMode "LIMITED";
-_null = _group2 setFormation "STAG COLUMN";
-_null = _group2 setBehaviour "SAFE";
-[_group2,position nearestBuilding _this,200] call CBA_fnc_taskPatrol;
-
-"O_officer_F" createUnit [_spawnPos, _group3, "ron = this; this allowFleeing 0;", 0.5, "PRIVATE"];
-"O_Soldier_lite_F" createUnit [_spawnPos, _group3, "this allowFleeing 0;", 0.5, "PRIVATE"];
-[_group3,position nearestBuilding _this,5, 2, false] call CBA_fnc_taskDefend;
-
-publicVariable "ron";
+#include "OPFOR4.sqf"
 
 if (isServer) then {
-	ron addMPEventHandler
-	["mpkilled", {
-		[_this select 0] spawn {
+
+	ron addMPEventHandler ["MPKilled", {["TaskSucceeded",["OBJECTIVE COMPLETE","mpkilled<br/>murder"]] call bis_fnc_showNotification;}];
+
+	ron addMPEventHandler ["MPKilled", {
+		[{
 			sleep 5;
 			docs = createMarker["Targetpin", position (ron)];
 			docs setMarkerSize [3, 3];
@@ -61,29 +47,29 @@ if (isServer) then {
 			docs setMarkerBrush "SolidBorder";
 			docs setMarkerColor "ColorRed";
 			docs setMarkerAlpha .8;
-		};
-		_this select 0 addAction 
-		["Upload Intel", {
+		}, "BIS_fnc_spawn", true, false, false] spawn BIS_fnc_MP;
+		ron addAction ["Upload Intel", {
 			[[[getPos ron],{
 				task1 setTaskState "Succeeded";
 				task2 = player createSimpleTask ["Escape"];
 				task2 setSimpleTaskDescription ["Leave the area.", "Exfiltrate", "Target area"];
 				player setCurrentTask task2;
 				["TaskSucceeded",["OBJECTIVE COMPLETE","Intel Uploaded<br/>now git out"]] call bis_fnc_showNotification;
-
-				endtrg = createTrigger ["EmptyDetector", _this select 0];	// use trigger array to count blufor units for determining escape
-				endtrg setTriggerArea [205, 205, 0, false];
-				endtrg setTriggerActivation ["ANY","PRESENT",false];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
-				endtrg setTriggerStatements ["this", "", ""];
+				if (isserver) then { [[[],{
+					endtrg = createTrigger ["EmptyDetector", position ron];	// use trigger array to count blufor units for determining escape
+					endtrg setTriggerArea [205, 205, 0, false];
+					endtrg setTriggerActivation ["ANY","PRESENT",false];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
+					endtrg setTriggerStatements ["this", "", ""];
 				
-				waitUntil{sleep 3; ({_x in unitsblue}count list endtrg) < 1}; // no living units in west are within 200m of ron's body, mission will end
+					waitUntil{sleep 3; ({_x in unitsblue}count list endtrg) < 1}; // no living units in west are within 200m of ron's body, mission will end
 
-				if (count (unitsblue call CBA_fnc_getAlive) > 0) then {
-					[[[],{["END1", true, true] call BIS_fnc_endMission;task2 setTaskState "Succeeded";}], "BIS_fnc_spawn", true, false, false] spawn BIS_fnc_MP;
-				
-				} else {
-					[[[],{["LOSER", false, true] call BIS_fnc_endMission;}], "BIS_fnc_spawn", true, false, false] spawn BIS_fnc_MP;
-				};
+					if (count (unitsblue call CBA_fnc_getAlive) > 0) then {
+						["END1", true, true] call BIS_fnc_endMission;
+						task2 setTaskState "Succeeded";
+					} else {
+						["LOSER", false, true] call BIS_fnc_endMission;
+					}
+				}], "BIS_fnc_spawn", true, false, false] spawn BIS_fnc_MP;};
 
 			}], "BIS_fnc_spawn", false, false, false] spawn BIS_fnc_MP;
 
