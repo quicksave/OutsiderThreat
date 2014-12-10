@@ -45,7 +45,7 @@ One of Colonel Vahid Namdar's personal couriers is isolated nearby and his escor
 <br/><br/>
 ENEMY FORCES
 <br/>
-Squad strength CSAT infantry with a small, lightly equipped guard attachment.
+At least squad strength CSAT infantry with a guard attachment.
 <br/><br/>
 FRIENDLY FORCES
 <br/>

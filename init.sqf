@@ -1,25 +1,21 @@
 execVM "briefing.sqf";
-sleep 1;
 
-pliers = [];
-unitsblue = [];
-{
-	if (typeOf _x == "Land_Pliers_F") then { 
-		pliers = pliers + [_x];
-	};
-	if (side _x == west) then { 
-		unitsblue = unitsblue + [_x];
-	};	
-}foreach list trig1;
+enableSaving [false, false];
+enableSentences false;
+Lead addGroupIcon ["b_inf",[0,0]];
+Lead setGroupIconParams [[0,.25,1,1],"SL",1,true];
+Alpha addGroupIcon ["b_inf",[0,0]];
+Alpha setGroupIconParams [[0,.25,1,1],"A",1,true];
+Bravo addGroupIcon ["b_inf",[0,0]];
+Bravo setGroupIconParams [[0,.25,1,1],"B",1,true];
+setGroupIconsVisible [true,false];
 
-deletevehicle trig1;
 
-ran = -1;
-if (isserver) then {
-	ran = floor random count pliers;
-	waituntil{ran > -1};
-	publicvariable "ran";
-};
+task1 = player createSimpleTask ["SecureIntel"];
+task1 setSimpleTaskDescription ["Kill courier and take his shit.", "Find the intel", "Target area"];
+player setCurrentTask task1;
 
-waituntil{ran > -1};
-(position (pliers select ran)) execVM "stavros.sqf";
+waitUntil{sleep 1; (str(getmarkerpos "Targetarea") != "[0,0,0]");};
+openmap true;
+mapAnimAdd [0, .04, getMarkerPos "Targetarea"];
+mapAnimCommit;

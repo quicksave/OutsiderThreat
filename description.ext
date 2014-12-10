@@ -1,7 +1,7 @@
 overviewText = "Attack a randomized enemy position, search the courier and exfiltrate.";
 author="jorsh";
 OnLoadName="outsider threat";
-OnLoadMission="THIS ONE IS SIMPLE GANG, A CLASSIC KNOCKOVER";
+OnLoadMission="A CLASSIC KNOCKOVER";
 
 saving = 0;
 
@@ -19,15 +19,15 @@ class Params
 	class Difficulty
 	{
 		title = "Difficulty: Select number of players.";
-		values[] = {4, 8, 12, 24};
+		values[] = {1, 2, 3, 4};
 		texts[] = {"4", "8", "12", "24"};
-		default = 4;
+		default = 1;
 	};
 	class TimeofDay
 	{
 		title = "Time";
 		texts[] = {"Morning","Midday","Evening","Midnight"};
-		values[] = {5,12,18,0};
+		values[] = {4.6,12,18,0};
 		default = 12;
 		function = "BIS_fnc_paramDaytime"; // (Optional) Function called when player joins, selected value is passed as an argument
  		isGlobal = 1; // (Optional) 1 to execute script / function locally for every player who joins, 0 to do it only on server
@@ -37,7 +37,7 @@ class Params
 		title = "Desired player faction:";
 		values[] = {"us", "ru", "nk", "is"};
 		texts[] = {"'MURICA FUCK YEAH", "Ah, Motherland!", "Best Korea", "Nasheed n' Weed"};
-		default = "usa";
+		default = "us";
 		//file = "setPlayerFaction.sqf";
 	};
 };
