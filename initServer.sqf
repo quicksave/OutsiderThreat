@@ -1,289 +1,151 @@
-opforside = createCenter east;
-bluforside = createCenter west;
-pliers = [];
-unitsblue = [];
+if (!isserver) exitwith {};
 
-endtrg = objnull;
+private
+[
+	"_tgtpos","_tgtspawnpos","_safepos","_tgtmark","_bluespawnpos","_playerdir","_roniskill","_docmark",
+	"_group1","_group2","_group3","_group4","_group5",
+	"_patroldir","_patroldis","_patrolpos"
+];
+_tgtpos = getmarkerpos (allmapmarkers call BIS_fnc_selectRandom);
+_tgtspawnpos= [1,1,1];
 inteluploaded = false;
+_safepos = false;
 
-//getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition")
-pliers = nearestobjects [[15000,15000,0],["Land_Pliers_F"],20000];
-
-unitsblue = [allunits, { side _x == west }] call BIS_fnc_conditionalSelect;
-
-ran = floor random count pliers;
-
-safe = false;
-while {!safe} do {
-	spawnPos = [(position (pliers select ran)), 0, 30, 1, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
-	if ((spawnPos select 0) != 1) then {
-		safe = true;
-	};
+if (count playableunits == 0) then
+{
+	blueunits = switchableunits; //playableunits;
+}
+else
+{
+	blueunits = playableunits;
 };
-	
-target = createMarker ["Targetarea", position (pliers select ran)]; //majority of enterable bldgs on smd sahrani not recognized by nearestbuilding
-target setMarkerSize [200, 200];
-target setMarkerShape "ELLIPSE";
-target setMarkerBrush "Border";
-target setMarkerColor "ColorRed";
-target setMarkerAlpha 1;
 
-//-	teleport unitsblue to a 'safe' position approx 725m away from the enemy spawn position in a random direction
-safe = false;
-while {!safe} do {
-	startDistance = 700 + random 50;
-	startDir = random 360;
-	startPos = [(spawnPos select 0) + startDistance * (sin (startDir + 180)),(spawnPos select 1) + startdistance * (cos (startDir + 180))];
-	startPos = [startPos, 0, 50, 1, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
-	
-	if ((startPos select 0) != 1) then {
-		safe=true;
+// create target area marker
+_tgtmark = createMarker ["Targetarea", _tgtpos]; //majority of enterable bldgs on smd sahrani not recognized by nearestbuilding
+_tgtmark setMarkerSize [200, 200];
+_tgtmark setMarkerShape "ELLIPSE";
+_tgtmark setMarkerBrush "Border";
+_tgtmark setMarkerColor "ColorRed";
+_tgtmark setMarkerAlpha 1;
+
+//get safe enemy spawn point
+while {!_safepos} do {
+	_tgtspawnpos =
+	[
+		_tgtpos,
+		0, 30, 1, 0, 1, 0, [], [[1,1,1],[1,1,1]]
+	] call BIS_fnc_findSafePos;
+	if ((_tgtspawnpos select 0) != 1) then {
+		_safepos = true;
 	};
 };
 
-/*
-pos = (startPos);
+_safepos = false;
+
+// get safe player spawn point ~725m away
+while {!_safepos} do
 {
-[-2, {
-	(_this select 0) setDir (_this select 1);
-	(_this select 0) setPos (_this select 2);
-  }, [_x,startDir,pos]] call CBA_fnc_globalExecute;
-	pos = [(pos select 0) + 2,(pos select 1)];
-} forEach (unitsblue);
-*/
-
-pos = (startPos);
-{
-	[[[_x, startDir, pos],{
-		(_this select 0) setDir (_this select 1);
-		(_this select 0) setPos (_this select 2);
-	}], "BIS_fnc_call", _x] call BIS_fnc_MP;
+	_playerdir = random 360;
 	
-	pos = [(pos select 0) + 2,(pos select 1)];
+	_bluespawnpos =
+	[
+		(_tgtspawnpos select 0) + (700 + random 50) * (sin (_playerdir + 180)),
+		(_tgtspawnpos select 1) + (700 + random 50) * (cos (_playerdir + 180))
+	];
 	
-	(_x) disableai "TARGET";
-	(_x) disableai "AUTOTARGET";
-	(_x) disableai "MOVE";
+	_bluespawnpos = [_bluespawnpos, 0, 50, 1, 0, 1, 0, [], [[1,1,1],[1,1,1]]] call BIS_fnc_findSafePos;
 	
-} forEach (unitsblue);
-
-/*
-pos = (startPos);
-{
-	_x setDir (startDir);
-	_x setPos pos;
-	pos = [(pos select 0) + 2,(pos select 1)];
-} forEach (unitsblue);
-*/
-
-start = createMarker["start", startPos];
-start setMarkerType "mil_start";
-start setMarkerShape "ICON";
-start setMarkerColor "ColorBLUFOR";
-start setmarkerdir startDir;
-
-if (paramsArray select 0 == 1) then {
-	group1 = createGroup east; group2 = createGroup east; group3 = createGroup east;
-
-	"O_Officer_F" createUnit [spawnPos, group3, "ron = this; publicvariable 'ron';"];
-	"O_Soldier_lite_F" createUnit [spawnPos, group3, ""];
-	[group3,(position (pliers select ran)),10, 2, false] call CBA_fnc_taskDefend;
-
-	group1 = [spawnPos , east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
-	group1 setCombatMode "RED";
-	{_x allowFleeing 0} forEach units group1;
-	[group1,spawnPos,50, 3, true] call CBA_fnc_taskDefend; //Switch to BIS to remove CBA requirement.
-
-	patrolDir = random 360;
-	patrolDis = 100 + random 50;
-	patrolPos = [(spawnPos select 0) + patrolDis * (sin (patrolDir + 180)),(spawnPos select 1) + patrolDis * (cos (patrolDir + 180))];
-	
-	group2 = [patrolPos, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
-	group2 setSpeedMode "LIMITED";
-	group2 setFormation "FILE";
-	group2 setBehaviour "SAFE";
-	
-	[group2,spawnPos,200] call CBA_fnc_taskPatrol;
-};
-if (paramsArray select 0 == 2) then {
-	group1= createGroup east; group2 = createGroup east; group3 = createGroup east;
-	
-	"O_officer_F" createUnit [spawnPos, group3, "ron = this; publicvariable 'ron'; this allowFleeing 0;"];
-	"O_recon_medic_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_JTAC_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	[group3,spawnPos,10, 2, false] call CBA_fnc_taskDefend;
-
-	group1= [spawnPos , east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
-	null = group1 setCombatMode "RED";
-	{_x allowFleeing 0} forEach units group1;
-	[group1,spawnPos,50, 2, true] call CBA_fnc_taskDefend; //Switch to BIS to remove CBA requirement.
-
-	patrolDir = random 360;
-	patrolDis = 100 + random 50;
-	patrolPos = [(spawnPos select 0) + patrolDis * (sin (patrolDir + 180)),(spawnPos select 1) + patrolDis * (cos (patrolDir + 180))];
-	
-	group2= [patrolPos, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
-	"O_Soldier_AR_F" createUnit [spawnPos, group2];
-	"O_Soldier_F" createUnit [spawnPos, group2];
-	group2 setSpeedMode "LIMITED";
-	group2 setFormation "FILE";
-	group2 setBehaviour "SAFE";
-	[group2,spawnPos,200] call CBA_fnc_taskPatrol;
-};
-if (paramsArray select 0 == 3) then {
-	group1= createGroup east; group2 = createGroup east; group3 = createGroup east; group4 = creategroup east;
-	
-	"O_officer_F" createUnit [spawnPos, group3, "ron = this; publicvariable 'ron'; this allowFleeing 0;"];
-	"O_recon_medic_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_JTAC_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	[group3,spawnPos,10, 2, false] call CBA_fnc_taskDefend;
-
-	group1= [spawnPos , east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
-	group1 setCombatMode "RED";
-	{_x allowFleeing 0} forEach units group1;
-	[group1,spawnPos,75, 2, true] call CBA_fnc_taskDefend;
-	
-	patrolDir1 = random 180;
-	patrolDis1 = 125 + random 125;
-	patrolPos1 = [(spawnPos select 0) + patrolDis1 * (sin (patrolDir1 + 180)),(spawnPos select 1) + patrolDis1 * (cos (patrolDir1 + 180))];
-
-	group2= [patrolPos1, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
-	null = group2 setSpeedMode "LIMITED";
-	null = group2 setFormation "FILE";
-	null = group2 setBehaviour "SAFE";
-	[group2,spawnPos,250] call CBA_fnc_taskPatrol;
-	
-	patrolDir2 = 180 + random 180;
-	patrolDis2 = 125 + random 125;
-	patrolPos2 = [(spawnPos select 0) + patrolDis2 * (sin (patrolDir2 + 180)),(spawnPos select 1) + patrolDis2 * (cos (patrolDir2 + 180))];
-
-	group4= [patrolPos2, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
-	null = group4 setSpeedMode "LIMITED";
-	null = group4 setFormation "FILE";
-	null = group4 setBehaviour "SAFE";
-	[group4,spawnPos,250] call CBA_fnc_taskPatrol;
-}; 
-if (paramsArray select 0 == 4) then {
-	group1= createGroup east; group2 = createGroup east; group3 = createGroup east; group4 = creategroup east; group5 = creategroup east;
-	
-	"O_officer_F" createUnit [spawnPos, group3, "ron = this; publicvariable 'ron'; this allowFleeing 0;", 0.5, "LIEUTENANT"];
-	"O_recon_medic_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_JTAC_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	"O_recon_F" createUnit [spawnPos, group3, "this allowFleeing 0;"];
-	[group3,spawnPos,10, 3, false] call CBA_fnc_taskDefend;
-
-	group1= [spawnPos , east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfTeam")] call BIS_fnc_spawnGroup;
-	"O_Soldier_AR_F" createUnit [spawnPos, group1];
-	"O_Soldier_F" createUnit [spawnPos, group1];
-	group1 setCombatMode "RED";
-	{_x allowFleeing 0} forEach units group1;
-	[group1,spawnPos,75, 2, true] call CBA_fnc_taskDefend;
-	
-	patrolDir1 = random 120;
-	patrolDis1 = 150 + random 150;
-	patrolPos1 = [(spawnPos select 0) + patrolDis1 * (sin (patrolDir1 + 180)),(spawnPos select 1) + patrolDis1 * (cos (patrolDir1 + 180))];
-
-	group2= [patrolPos1, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
-	group2 setSpeedMode "LIMITED";
-	group2 setFormation "FILE";
-	group2 setBehaviour "SAFE";
-	[group2,spawnPos,300] call CBA_fnc_taskPatrol;
-	
-	patrolDir2 = 120 + random 120;
-	patrolDis2 = 150 + random 150;
-	patrolPos2 = [(spawnPos select 0) + patrolDis2 * (sin (patrolDir2 + 180)),(spawnPos select 1) + patrolDis2 * (cos (patrolDir2 + 180))];
-
-	group4= [patrolPos2, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
-	group4 setSpeedMode "LIMITED";
-	group4 setFormation "FILE";
-	group4 setBehaviour "SAFE";
-	[group4,spawnPos,300] call CBA_fnc_taskPatrol;
-	
-	patrolDir3 = 240 + random 120;
-	patrolDis3 = 150 + random 150;
-	patrolPos3 = [(spawnPos select 0) + patrolDis3 * (sin (patrolDir3 + 180)),(spawnPos select 1) + patrolDis3 * (cos (patrolDir3 + 180))];
-
-	group5= [patrolPos3, east, (configFile >> "CfgGroups" >> "East" >> "OPF_F" >> "Infantry" >> "OIA_InfSquad")] call BIS_fnc_spawnGroup;
-	group5 setSpeedMode "LIMITED";
-	group5 setFormation "FILE";
-	group5 setBehaviour "SAFE";
-	[group5,spawnPos,300] call CBA_fnc_taskPatrol;
+	if ((_bluespawnpos select 0) != 1) then
+	{
+		_safepos = true;
+	};
 };
 
-roniskill = ron addeventhandler ["Killed",
+// move players to start point
+{_x setpos ([_bluespawnpos,10] call bg_fnc_ranpos); _x setdir _playerdir;} foreach blueunits;
+
+//spawn enemy groups
+_group1 = creategroup east;
+_group2 = creategroup east;
+_group3 = creategroup east;
+_group4 = creategroup east;
+_group5 = creategroup east;
+"O_Officer_F" createUnit [_tgtspawnpos, _group1, "ron = this; publicvariable 'ron';"];
+
+switch (bg_param_difficulty) do
 {
-	[] spawn {
-		docs = createMarker["Targetpin", position (ron)];
-		docs setMarkerSize [3, 3];
-		docs setMarkerShape "ELLIPSE";
-		docs setMarkerBrush "SolidBorder";
-		docs setMarkerColor "ColorRed";
-		docs setMarkerAlpha .8;
+	default {
+		#include "spawnopfor4.sqf"
+	};
+	case "8": {
+		#include "spawnopfor8.sqf"
+	};
+	case "12": {
+		#include "spawnopfor12.sqf"
+	};
+	case "24": {
+		#include "spawnopfor24.sqf"
+	};
+};
+
+// target is killed
+_roniskill = ron addeventhandler ["Killed",
+{
+	// marker on target's position at time of death
+	_docmark = createMarker["Targetpin", position (ron)];
+	_docmark setMarkerSize [3, 3];
+	_docmark setMarkerShape "ELLIPSE";
+	_docmark setMarkerBrush "SolidBorder";
+	_docmark setMarkerColor "ColorRed";
+	_docmark setMarkerAlpha .8;
+
+	// trigger to detect escape or wipe
+	endtrg = createTrigger ["EmptyDetector", position ron];
+	endtrg setTriggerArea [205, 205, 0, false];
+	endtrg setTriggerActivation ["ANY","PRESENT", false]; // agm incap'd units don't count as dead, but aren't detected by a WEST trigger
+	endtrg setTriggerStatements ["this", "", ""];
 	
-		endtrg = createTrigger ["EmptyDetector", position ron];	// use trigger to count blufor units
-		endtrg setTriggerArea [205, 205, 0, false];
-		endtrg setTriggerActivation ["ANY","PRESENT", false];	// agm incap'd units don't count as dead, but aren't detected by a WEST trigger
-		endtrg setTriggerStatements ["this", "", ""];
-		
-		[[[endtrg, unitsblue],{
-			intelact = ron addAction ["Upload Intel", {
-				[[[_this select 0, _this select 1],{
+	[[[],{
+		if (!isnil "uploadact") exitwith {};
+		uploadact = ron addAction ["Upload Intel", // objective action on target's body
+		{
+			[[[],{
+				if (!taskcompleted task1) then {
 					task1 setTaskState "Succeeded";
+				};
+				if (isnil "task2") then {
 					task2 = player createSimpleTask ["Escape"];
 					task2 setSimpleTaskDescription ["Leave the area.", "Exfiltrate", "Target area"];
-					player setCurrentTask task2;
-					["TaskSucceeded",["OBJECTIVE COMPLETE","Intel Uploaded<br/>now git out"]] call bis_fnc_showNotification;
-					ron removeAction intelact;
-					
-					inteluploaded = true;
-					
-				}], "BIS_fnc_spawn", true] spawn BIS_fnc_MP;
-			}, nil, 5, false, true,"","((_target distance _this) < 2)"];
-		}], "BIS_fnc_spawn", true] call BIS_fnc_MP;
+				};
+				
+				player setCurrentTask task2;
+				["TaskSucceeded",["       OBJECTIVE COMPLETE","Intel Uploaded<br/>now git out"]] call bis_fnc_showNotification;
+				ron removeAction uploadact;
+				
+				inteluploaded = true;
+				
+			}], "BIS_fnc_spawn", true] spawn BIS_fnc_MP;
+		}, nil, 5, false, true,"","((_target distance _this) < 2)"];
+	}], "BIS_fnc_spawn", true] call BIS_fnc_MP;
+
+	// detect end condition
+	[] spawn 
+	{
+		waitUntil{sleep 5; ({_x in blueunits}count list (endtrg)) < 1 && inteluploaded;};	// no one in unitsblue is within 200m of ron's pos on death
+		if (count ((list (endtrg)) call CBA_fnc_getAlive) > 0) then // at least one in units blue is alive
+		{
+			[[[],{
+				task2 setTaskState "Succeeded";
+				["TaskSucceeded",["      EXFILTRATION COMPLETE","you have 5 seconds to<br/>ensure ronnie's death."]] call bis_fnc_showNotification;
+				sleep 5;
+				["END1", true, true] call BIS_fnc_endMission;
+			}], "BIS_fnc_spawn", true] spawn BIS_fnc_MP;
+		}
+		else
+		{
+			[[[],{
+				["END2", false, true] call BIS_fnc_endMission;
+			}], "BIS_fnc_spawn", true] spawn BIS_fnc_MP;
+		};
 	};
 }];
-
-null = [] spawn 
-{
-	waitUntil{sleep 5; ({_x in unitsblue}count list endtrg) < 1 && inteluploaded};	// no one in unitsblue is within 200m of ron's pos on death
-	if (count ((list endtrg) call CBA_fnc_getAlive) > 0) then // at least one in units blue is alive
-	{
-		task2 setTaskState "Succeeded";
-		[[[],{
-			["END1", true, true] call BIS_fnc_endMission;
-		}], "BIS_fnc_spawn", true] spawn BIS_fnc_MP;
-	}
-	else
-	{
-		[[[],{
-			["LOSER", false, true] call BIS_fnc_endMission;
-		}], "BIS_fnc_spawn", true] spawn BIS_fnc_MP;
-	};
-};
-
-NamdarIsKill = Namdar addeventhandler ["Killed", {
-	[_this select 0, _this select 1] spawn {
-		sleep 0.5;
-		createvehicle ["HelicopterExploSmall",getpos (_this select 0), [],0,"CAN_COLLIDE"];
-		(_this select 0) setpos [0,0,0];
-	};
-}];
-
-sleep 1;
-pos = (startPos);
-{		
-	[[[_x, startDir, pos],{
-		(_this select 0) setDir (_this select 1);
-		(_this select 0) setPos (_this select 2);		
-	}], "BIS_fnc_call", _x] call BIS_fnc_MP;
-	
-	pos = [(pos select 0) + 2,(pos select 1)];
-	
-	(_x) disableai "ANIM";
-	
-} forEach (unitsblue);
