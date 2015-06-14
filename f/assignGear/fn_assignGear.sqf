@@ -15,7 +15,6 @@ private ["_faction","_loadout","_typeofUnit","_unit"];
 _typeofUnit = toLower (_this select 0);
 _unit = _this select 1;
 
-copytoclipboard str bg_param_playerfaction;
 switch (bg_param_playerfaction) do
 {
 	default {_faction = toLower (faction _unit);};
