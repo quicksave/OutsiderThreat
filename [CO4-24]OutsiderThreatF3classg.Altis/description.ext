@@ -252,16 +252,16 @@ class Params
 	class bg_param_westfaction
 	{
 		title = "Player faction";
-		values[] = {0,1,2,3,4,5};
-		texts[] = {"No change","NATO","US Army (UCP/digicam) (M16)","US Army (OCP/multicam) (M4)","FIA","AAF"};
+		values[] = {0,1,2,3,4,5,6,7};
+		texts[] = {"Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)"};
 		default = 0;
 		code = "bg_param_westfaction = %1";
 	};
 	class bg_param_eastfaction
 	{
 		title = "Enemy faction";
-		values[] = {0,1,2,3,4,5};
-		texts[] = {"No change","NATO","US Army (UCP/digicam)","US Army (OCP/multicam)","FIA","AAF"};
+		values[] = {0,1,2,3,4,5,6,7};
+		texts[] = {"Random","NATO","US Army (UCP/digicam) (M16)","US Army (OCP/multicam) (M4)","FIA","AAF", "CSAT", "Russian (RHS)"};
 		default = 0;
 		code = "bg_param_eastfaction = %1";
 	};
@@ -458,14 +458,11 @@ class CfgFunctions
 	{
 		class common
 		{
-			class assigngear
-			{
-				file = "bg\assigngear.sqf";
-			};
-			class ranpos
-			{
-				file = "ranpos.sqf";
-			};
+			file = "bg";
+
+			class assigngear{};
+			class assigngearglobal{};
+			class ranpos{};
 		};
 	};
 	

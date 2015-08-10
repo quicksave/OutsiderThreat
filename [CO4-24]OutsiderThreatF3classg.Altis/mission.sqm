@@ -42,13 +42,15 @@ class Mission
 		"A3_Air_F_Heli_Heli_Light_01",
 		"a3_air_f_heli_light_01",
 		"lop_c_men",
-		"rhs_c_a2port_air"
+		"rhs_c_a2port_air",
+		"AGM_Medical"
 	};
 	addOnsAuto[]=
 	{
 		"A3_Characters_F_BLUFOR",
 		"a3_characters_f",
 		"A3_Characters_F_Gamma",
+		"AGM_Medical",
 		"a3_map_altis"
 	};
 	randomSeed=11823142;
@@ -74,7 +76,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=16;
+		items=17;
 		class Item0
 		{
 			side="WEST";
@@ -92,7 +94,7 @@ class Mission
 					rank="LIEUTENANT";
 					skill=0.60000002;
 					text="UnitNATO_CO";
-					init="GrpNATO_CO = group this; [""co"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_CO = group this;";
 					description="Platoon Leader";
 				};
 				class Item1
@@ -105,7 +107,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_CO_M";
-					init="GrpNATO_CO = group this; [""m"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_CO = group this;";
 					description="Medic";
 				};
 				class Item2
@@ -118,7 +120,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_CO_UAV";
-					init="GrpNATO_CO = group this; [""dm"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_CO = group this;";
 					description="Designated Marksman";
 				};
 				class Item3
@@ -130,7 +132,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_CO_D";
-					init="GrpNATO_CO = group this; [""dc"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_CO = group this;";
 					description="Platoon Sergeant";
 				};
 			};
@@ -152,7 +154,7 @@ class Mission
 					rank="SERGEANT";
 					skill=0.60000002;
 					text="UnitNATO_ASL_SL";
-					init="GrpNATO_ASL = group this; [""dc"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_ASL = group this;";
 					description="Alpha Squad Leader";
 				};
 				class Item1
@@ -165,7 +167,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_ASL_M";
-					init="GrpNATO_ASL = group this; [""m"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_ASL = group this;";
 					description="Medic";
 				};
 			};
@@ -187,7 +189,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_A1_FTL";
-					init="GrpNATO_A1 = group this; [""ftl"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A1 = group this;";
 					description="A1 Fireteam Leader";
 				};
 				class Item1
@@ -199,7 +201,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_A1_AR";
-					init="GrpNATO_A1 = group this; [""ar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A1 = group this;";
 					description="Automatic Rifleman";
 				};
 				class Item2
@@ -211,7 +213,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_A1_AAR";
-					init="GrpNATO_A1 = group this; [""aar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A1 = group this;";
 					description="Assistant Automatic Rifleman";
 				};
 				class Item3
@@ -223,7 +225,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_A1_AT";
-					init="GrpNATO_A1 = group this; [""rat"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A1 = group this;";
 					description="Rifleman (AT)";
 				};
 			};
@@ -245,7 +247,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_A2_FTL";
-					init="GrpNATO_A2 = group this; [""ftl"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A2 = group this;";
 					description="A2 Fireteam Leader";
 				};
 				class Item1
@@ -257,7 +259,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_A2_AR";
-					init="GrpNATO_A2 = group this; [""ar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A2 = group this;";
 					description="Automatic Rifleman";
 				};
 				class Item2
@@ -269,7 +271,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_A2_AAR";
-					init="GrpNATO_A2 = group this; [""aar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A2 = group this;";
 					description="Assistant Automatic Rifleman";
 				};
 				class Item3
@@ -281,7 +283,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_A2_AT";
-					init="GrpNATO_A2 = group this; [""rat"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_A2 = group this;";
 					description="Rifleman (AT)";
 				};
 			};
@@ -303,7 +305,7 @@ class Mission
 					rank="SERGEANT";
 					skill=0.60000002;
 					text="UnitNATO_BSL_SL";
-					init="GrpNATO_BSL = group this; [""dc"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_BSL = group this;";
 					description="Bravo Squad Leader";
 				};
 				class Item1
@@ -316,7 +318,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_BSL_M";
-					init="GrpNATO_BSL = group this; [""m"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_BSL = group this;";
 					description="Medic";
 				};
 			};
@@ -338,7 +340,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_B1_FTL";
-					init="GrpNATO_B1 = group this; [""ftl"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B1 = group this;";
 					description="B1 Fireteam Leader";
 				};
 				class Item1
@@ -350,7 +352,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_B1_AR";
-					init="GrpNATO_B1 = group this; [""ar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B1 = group this;";
 					description="Automatic Rifleman";
 				};
 				class Item2
@@ -362,7 +364,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_B1_AAR";
-					init="GrpNATO_B1 = group this; [""aar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B1 = group this;";
 					description="Assistant Automatic Rifleman";
 				};
 				class Item3
@@ -374,7 +376,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_B1_AT";
-					init="GrpNATO_B1 = group this; [""rat"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B1 = group this;";
 					description="Rifleman (AT)";
 				};
 			};
@@ -396,7 +398,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_B2_FTL";
-					init="GrpNATO_B2 = group this; [""ftl"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B2 = group this;";
 					description="B2 Fireteam Leader";
 				};
 				class Item1
@@ -408,7 +410,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_B2_AR";
-					init="GrpNATO_B2 = group this; [""ar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B2 = group this;";
 					description="Automatic Rifleman";
 				};
 				class Item2
@@ -420,7 +422,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_B2_AAR";
-					init="GrpNATO_B2 = group this; [""aar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B2 = group this;";
 					description="Assistant Automatic Rifleman";
 				};
 				class Item3
@@ -432,7 +434,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_B2_AT";
-					init="GrpNATO_B2 = group this; [""rat"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_B2 = group this;";
 					description="Rifleman (AT)";
 				};
 			};
@@ -454,7 +456,7 @@ class Mission
 					rank="SERGEANT";
 					skill=0.60000002;
 					text="UnitNATO_CSL_SL";
-					init="GrpNATO_CSL = group this; [""dc"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_CSL = group this;";
 					description="Charlie Squad Leader";
 				};
 				class Item1
@@ -467,7 +469,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_CSL_M";
-					init="GrpNATO_CSL = group this; [""m"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_CSL = group this;";
 					description="Medic";
 				};
 			};
@@ -489,7 +491,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_C1_FTL";
-					init="GrpNATO_C1 = group this; [""ftl"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C1 = group this;";
 					description="C1 Fireteam Leader";
 				};
 				class Item1
@@ -501,7 +503,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_C1_AR";
-					init="GrpNATO_C1 = group this; [""ar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C1 = group this;";
 					description="Automatic Rifleman";
 				};
 				class Item2
@@ -513,7 +515,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_C1_AAR";
-					init="GrpNATO_C1 = group this; [""aar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C1 = group this;";
 					description="Assistant Automatic Rifleman";
 				};
 				class Item3
@@ -525,7 +527,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_C1_AT";
-					init="GrpNATO_C1 = group this; [""rat"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C1 = group this;";
 					description="Rifleman (AT)";
 				};
 			};
@@ -547,7 +549,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_C2_FTL";
-					init="GrpNATO_C2 = group this; [""ftl"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C2 = group this;";
 					description="C2 Fireteam Leader";
 				};
 				class Item1
@@ -559,7 +561,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_C2_AR";
-					init="GrpNATO_C2 = group this; [""ar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C2 = group this;";
 					description="Automatic Rifleman";
 				};
 				class Item2
@@ -571,7 +573,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_C2_AAR";
-					init="GrpNATO_C2 = group this; [""aar"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C2 = group this;";
 					description="Assistant Automatic Rifleman";
 				};
 				class Item3
@@ -583,7 +585,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_C2_AT";
-					init="GrpNATO_C2 = group this; [""rat"",this] call bg_fnc_assigngear;";
+					init="GrpNATO_C2 = group this;";
 					description="Rifleman (AT)";
 				};
 			};
@@ -605,7 +607,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_MMG1_AG";
-					init="GrpNATO_MMG1 = group this; [""mmgag"",this] call bg_fnc_assigngear;      ";
+					init="GrpNATO_MMG1 = group this;";
 					description="MMG Assistant";
 				};
 				class Item1
@@ -617,7 +619,7 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_MMG1_G";
-					init="GrpNATO_MMG1 = group this; [""mmgg"",this] call bg_fnc_assigngear; ";
+					init="GrpNATO_MMG1 = group this;";
 					description="MMG Gunner";
 				};
 			};
@@ -639,8 +641,8 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_HMG1_AG";
-					init="GrpNATO_HMG1 = group this; [""hmgag"",this] call bg_fnc_assigngear;      ";
-					description="HMG Assistant";
+					init="GrpNATO_HMG1 = group this;";
+					description="HMG Assistant (Static)";
 				};
 				class Item1
 				{
@@ -651,8 +653,8 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					text="UnitNATO_HMG1_G";
-					init="GrpNATO_HMG1 = group this; [""hmgg"",this] call bg_fnc_assigngear; ";
-					description="HMG Gunner";
+					init="GrpNATO_HMG1 = group this;";
+					description="HMG Gunner (Static)";
 				};
 			};
 		};
@@ -673,7 +675,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_MAT1_AG";
-					init="GrpNATO_MAT1 = group this; [""matag"",this] call bg_fnc_assigngear; ";
+					init="GrpNATO_MAT1 = group this;";
 					description="MAT Assistant";
 				};
 				class Item1
@@ -686,7 +688,7 @@ class Mission
 					skill=0.60000002;
 					health=0.99000001;
 					text="UnitNATO_MAT1_G";
-					init="GrpNATO_MAT1 = group this; [""matg"",this] call bg_fnc_assigngear; ";
+					init="GrpNATO_MAT1 = group this;";
 					description="MAT Gunner";
 				};
 			};
@@ -708,8 +710,8 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_HAT1_AG";
-					init="GrpNATO_HAT1 = group this; [""hatag"",this] call bg_fnc_assigngear; ";
-					description="HAT Assistant";
+					init="GrpNATO_HAT1 = group this;";
+					description="HAT Assistant (Static)";
 				};
 				class Item1
 				{
@@ -721,8 +723,8 @@ class Mission
 					skill=0.60000002;
 					health=0.99000001;
 					text="UnitNATO_HAT1_G";
-					init="GrpNATO_HAT1 = group this; [""hatg"",this] call bg_fnc_assigngear; ";
-					description="HAT Gunner";
+					init="GrpNATO_HAT1 = group this;";
+					description="HAT Gunner (Static)";
 				};
 			};
 		};
@@ -743,7 +745,7 @@ class Mission
 					rank="CORPORAL";
 					skill=0.60000002;
 					text="UnitNATO_MSAM1_AG";
-					init="GrpNATO_MSAM1 = group this; [""msamag"",this] call bg_fnc_assigngear; ";
+					init="GrpNATO_MSAM1 = group this;";
 					description="MAA Assistant";
 				};
 				class Item1
@@ -756,7 +758,7 @@ class Mission
 					skill=0.60000002;
 					health=0.99000001;
 					text="UnitNATO_MSAM1_G";
-					init="GrpNATO_MSAM1 = group this; [""msamg"",this] call bg_fnc_assigngear; ";
+					init="GrpNATO_MSAM1 = group this;";
 					description="MAA Gunner";
 				};
 			};
@@ -777,9 +779,8 @@ class Mission
 					leader=1;
 					rank="COLONEL";
 					skill=0.60000002;
-					text="Namdar";
-					init="removeAllWeapons this;  removeAllItems this;  removeAllAssignedItems this;  removeUniform this;  removeVest this;  removeBackpack this;  removeHeadgear this;  removeGoggles this;  this forceAddUniform ""MNP_CombatUniform_Rebel_B"";  this addItemToUniform ""30Rnd_762x39_AKM"";  this addHeadgear ""mgsr_beret"";  this addGoggles ""EWK_Cigar2"";  this addWeapon ""arifle_SUD_AKMS"";  this addWeapon ""RH_Deagleg"";  this linkItem ""ItemMap"";  this linkItem ""ItemCompass"";  this linkItem ""ItemWatch"";  this linkItem ""ItemGPS"";  this linkItem ""pmc_earpiece"";";
-					description="Namdar";
+					text="namdar";
+					init="this setName ""Namdar""; removeAllWeapons this;  removeAllItems this;  removeAllAssignedItems this;  removeUniform this;  removeVest this;  removeBackpack this;  removeHeadgear this;  removeGoggles this;  this forceAddUniform ""MNP_CombatUniform_Rebel_B"";  this addHeadgear ""LOP_H_Bardak_beret"";  this addGoggles ""EWK_Cigar2"";  this addWeapon ""RH_Deagleg""; this setVariable [""f_var_assignGear_done"", true, true];";
 				};
 			};
 			class Waypoints
@@ -787,7 +788,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={8793.5283,183.62637,17793.99};
+					position[]={8699.5244,168.04141,17785.268};
 					placement=4500;
 					speed="LIMITED";
 					combat="CARELESS";
@@ -795,6 +796,118 @@ class Mission
 					{
 					};
 					showWP="NEVER";
+				};
+			};
+		};
+		class Item16
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={23710.299,3.1900001,17889.807};
+					class args
+					{
+						items=15;
+						class Item0
+						{
+							value="1";
+							parentCls="AGM_ModuleMedical";
+							typeName="CoefDamage";
+						};
+						class Item1
+						{
+							value="1";
+							parentCls="AGM_ModuleMedical";
+							typeName="CoefBleeding";
+						};
+						class Item2
+						{
+							value="1";
+							parentCls="AGM_ModuleMedical";
+							typeName="CoefPain";
+						};
+						class Item3
+						{
+							value="1.5";
+							parentCls="AGM_ModuleMedical";
+							typeName="CoefNonMedic";
+						};
+						class Item4
+						{
+							value="-1";
+							parentCls="AGM_ModuleMedical";
+							typeName="MaxUnconsciousnessTime";
+						};
+						class Item5
+						{
+							value="1";
+							parentCls="AGM_ModuleMedical";
+							typeName="AllowNonmedics";
+						};
+						class Item6
+						{
+							value="0";
+							parentCls="AGM_ModuleMedical";
+							typeName="RequireDiagnosis";
+						};
+						class Item7
+						{
+							value="1";
+							parentCls="AGM_ModuleMedical";
+							typeName="PreventInstaDeath";
+						};
+						class Item8
+						{
+							value="0";
+							parentCls="AGM_ModuleMedical";
+							typeName="PreventDeathWhileUnconscious";
+						};
+						class Item9
+						{
+							value="0";
+							parentCls="AGM_ModuleMedical";
+							typeName="SingleBandage";
+						};
+						class Item10
+						{
+							value="0";
+							parentCls="AGM_ModuleMedical";
+							typeName="AllowChatWhileUnconscious";
+						};
+						class Item11
+						{
+							value="1";
+							parentCls="AGM_ModuleMedical";
+							typeName="EnableOverdosing";
+						};
+						class Item12
+						{
+							value="0";
+							parentCls="AGM_ModuleMedical";
+							typeName="RequireMEDEVAC";
+						};
+						class Item13
+						{
+							value="1";
+							parentCls="AGM_ModuleMedical";
+							typeName="AutomaticWakeup";
+						};
+						class Item14
+						{
+							value="0";
+							parentCls="AGM_ModuleMedical";
+							typeName="DisableScreams";
+						};
+					};
+					id=45;
+					side="LOGIC";
+					vehicle="AGM_ModuleMedical";
+					leader=1;
+					lock="UNLOCKED";
+					skill=0.60000002;
 				};
 			};
 		};

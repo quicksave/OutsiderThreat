@@ -5,6 +5,9 @@ primary[] =
 		{
 			{"30Rnd_65x39_caseless_green",8}, 
 			{"30Rnd_65x39_caseless_green_mag_Tracer",2}
+		},
+		{
+			{"optic_ACO_grn"}
 		}
 	}
 };

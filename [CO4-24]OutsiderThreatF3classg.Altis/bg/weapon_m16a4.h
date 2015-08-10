@@ -1,0 +1,23 @@
+primary[] = 
+{
+	{
+		"rhs_weap_m16a4_carryhandle",
+		{
+			{"rhs_mag_30Rnd_556x45_M855A1_Stanag",8}, 
+			{"rhs_mag_30Rnd_556x45_M855A1_Stanag_Tracer_Red",2}
+		},
+		{
+			{"rhsusf_acc_compm4"}
+		}
+	},
+		{
+		"rhs_weap_m16a4_carryhandle_pmag",
+		{
+			{"rhs_mag_30Rnd_556x45_M855A1_Stanag",8}, 
+			{"rhs_mag_30Rnd_556x45_M855A1_Stanag_Tracer_Red",2}
+		},
+		{
+			{"rhsusf_acc_compm4"}
+		}
+	}
+};

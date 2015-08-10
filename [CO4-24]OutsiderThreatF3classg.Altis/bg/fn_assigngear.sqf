@@ -1,28 +1,30 @@
-
 private ["_unit"];
 _unit = (_this select 1);
 
 // Depending on locality the script decides if it should run
 if !(local _unit) exitWith {};
 
+scopename "main";
+
 //init vars
 private
 [
 	"_faction","_typeofUnit", "_unitsidestring", "_sideexists", "_factionexists", "_typeexists",
 	"_uniform", "_helmet", "_vest", "_pack", "_facewear", "_goggles", "_map", "_terminal", "_radio", "_compass", "_watch",
-	"_meditems", "_items", "_packitems", "_packmags",
+	"_mags", "_meditems", "_items", "_packitems", "_packmags",
 	"_primary", "_primaryfinal","_primaryattach", "_secondary", "_secondaryfinal","_secondaryattach", "_handgun", "_handgunfinal","_handgunattach", "_binos", "_binosfinal",
 	"_weapons1", "_weapons2", "_weapons3", "_mags1", "_mags2", "_mags3", "_items1", "_items2", "_items3", "_packs1", "_packs2", "_packs3",
-	"_gearvalue", "_gearname", "_classtype", "_wtc"
+	"_gearvalue", "_gearname", "_classtype", "_wtc", "_logstr"
 ];
 
+_logstr = "";
 _typeofUnit = toLower (_this select 0);
 _faction = toLower (faction _unit);
 _unitSidestring = tolower (str(side _unit));
 
-diag_log "___________________________________________";
-diag_log format["Gearing ""%1"": %2, %3", _unit, _unitsidestring, _faction];
-
+//diag_log "___________________________________________";
+//diag_log format["Gearing ""%1"": %2, %3", _unit, _unitsidestring, _faction];
+_logstr = _logstr + format["Gearing <%1>: ", _unit];
 
 // A public variable is set on the unit, indicating their type. This is mostly relevant for the F3 respawn component
 _unit setVariable ["f_var_assignGear",_typeofUnit,true];
@@ -43,6 +45,7 @@ if(count _this > 2) then
 	switch (_faction) do
 	{
 		default {};
+		case ("breakout") : {breakout "main"};
 		case ("nato") : {_faction = "blu_f"};
 		case ("csat") : {_faction = "opf_f"};
 		case ("fia") : {_faction = "blu_g_f"};
@@ -75,7 +78,8 @@ _sideexists = isclass (missionconfigfile >> "bg_loadout_define" >> _unitSidestri
 _factionexists = isclass (missionconfigfile >> "bg_loadout_define" >> _unitSidestring >> _faction);
 _typeexists = isclass (missionconfigfile >> "bg_loadout_define" >> _unitSidestring >> _faction >> _typeofunit);
 
-diag_log format ["%1: %2 >> %3 >> %4 requested", _unit, _unitsidestring, _faction, _typeofunit];
+//diag_log format ["%1: %2 >> %3 >> %4 requested", _unit, _unitsidestring, _faction, _typeofunit];
+_logstr = _logstr + format ["%2 >> %3 >> %4 req, ", _unit, _unitsidestring, _faction, _typeofunit];
 
 if !(_sideexists) then
 {
@@ -90,8 +94,8 @@ if !(_typeexists) then
 	_typeofunit = configname ((missionconfigfile >> "bg_loadout_define" >> _unitsidestring >> _faction) select 0);
 };
 
-diag_log format ["%1: %2 >> %3 >> %4 final", _unit, _unitsidestring, _faction, _typeofunit];
-
+//diag_log format ["%1: %2 >> %3 >> %4 final", _unit, _unitsidestring, _faction, _typeofunit];
+_logstr = _logstr + format ["%2 >> %3 >> %4 fin. ", _unit, _unitsidestring, _faction, _typeofunit];
 
 //vars
 
@@ -163,7 +167,8 @@ if !(_unit iskindof "man") then
 		} foreach _x;
 	} foreach [_packs1, _packs2, _packs3];
 	
-	diag_log format ["crate/veh inventory: %1", _weapons1 + _weapons2 + _weapons3 +_mags1 + _mags2 + _mags3 + _items1 + _items2 + _items3 + _packs1 + _packs2 + _packs3 - ["",0]];
+	//diag_log format ["crate/veh inventory: %1", _weapons1 + _weapons2 + _weapons3 +_mags1 + _mags2 + _mags3 + _items1 + _items2 + _items3 + _packs1 + _packs2 + _packs3 - ["",0]];
+	//_logstr = _logstr + format ["crate/veh inventory: %1", _weapons1 + _weapons2 + _weapons3 +_mags1 + _mags2 + _mags3 + _items1 + _items2 + _items3 + _packs1 + _packs2 + _packs3 - ["",0]];
 }
 
 //men
@@ -175,7 +180,8 @@ else
 	_handgunfinal = _handgun call bis_fnc_selectrandom;
 	_binosfinal = _binos call bis_fnc_selectrandom;
 	
-	diag_log format ["weapons: <%1>, <%2>, <%3>, <%4>",	(_primaryfinal select 0), (_secondaryfinal select 0),(_handgunfinal select 0), _binosfinal];
+	//diag_log format ["weapons: <%1>, <%2>, <%3>, <%4>",	(_primaryfinal select 0), (_secondaryfinal select 0),(_handgunfinal select 0), _binosfinal];
+	//_logstr = _logstr + format ["weapons: %1, %2, %3, %4. ",	(_primaryfinal select 0), (_secondaryfinal select 0),(_handgunfinal select 0), _binosfinal];
 	
 	//attachments
 	// -attach properties override attachments set in weapon property
@@ -196,6 +202,7 @@ else
 	} foreach [_primaryattach, _secondaryattach, _handgunattach];
 	
 	//diag_log format ["Pattach %1, Sattach %2, Hattach %3",_primaryattach, _secondaryattach, _handgunattach];
+	//_logstr = _logstr + format ["Pattach %1, Sattach %2, Hattach %3",_primaryattach, _secondaryattach, _handgunattach];
 	
 	//clear unit
 	removeBackpack _unit;
@@ -217,11 +224,6 @@ else
 
 	//linkables
 	{_unit linkitem _x} foreach [_map, _compass, _watch, _radio, _terminal, (_goggles call bis_fnc_selectrandom)];
-
-	//mags in backpack
-	{
-		(unitBackpack _unit) addMagazineCargoGlobal _x;
-	} foreach _packmags;
 
 	//items in backpack
 	{
@@ -249,7 +251,7 @@ else
 		{
 			_unit addmagazines _x;
 		} foreach _x;
-	} foreach [(_primaryfinal select 1),(_secondaryfinal select 1),(_handgunfinal select 1)];
+	} foreach [(_primaryfinal select 1),(_secondaryfinal select 1),(_handgunfinal select 1), _mags];
 	
 	//weapons
 	{
@@ -266,9 +268,18 @@ else
 	{
 		_unit addhandgunitem _x;
 	} foreach (_handgunattach call bis_fnc_selectrandom);
-	diag_log format ["attachments: %1", primaryweaponitems _unit + secondaryweaponitems _unit + handgunitems _unit - [""]]
+	//diag_log format ["attachments: %1", primaryweaponitems _unit + secondaryweaponitems _unit + handgunitems _unit - [""]];
+	//_logstr = _logstr + format ["attachments: %1", primaryweaponitems _unit + secondaryweaponitems _unit + handgunitems _unit - [""]];
+
+	//mags in backpack
+	//added last to account for large mags that only fit in packs (AT,AA) such that one mag needs to be loaded in launcher to carry another
+	{
+		(unitBackpack _unit) addMagazineCargoGlobal _x;
+	} foreach _packmags;
 };
-diag_log "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
+//diag_log "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
+
+diag_log _logstr;
 
 // This variable simply tracks the progress of the gear assignation process, for other scripts to reference.
 _unit setVariable ["f_var_assignGear_done",true,true];
