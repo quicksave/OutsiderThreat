@@ -1,9 +1,4 @@
-secondary[] = 
+class nlaw : weapon
 {
-	{
-		"launch_NLAW_F",
-		{
-			{"",0}
-		}
-	}
+	wepname = "launch_NLAW_F";
 };

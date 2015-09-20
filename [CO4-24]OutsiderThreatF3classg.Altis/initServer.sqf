@@ -160,7 +160,7 @@ switch (bg_param_difficulty) do
 	};
 };
 
-
+//handle faction parameter randomization
 _unitfactions = ["random","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f"]; //"ind_g_f", "opf_g_f"
 _factionparamarray = [];
 for "_i" from 0 to (count _unitfactions - 1) do {_factionparamarray set [count _factionparamarray, _i];};
@@ -180,7 +180,14 @@ if (_unitfactions select bg_param_eastfaction == "random") then
 	diag_log format ["                                                 east is %1", _unitfactions select bg_param_eastfaction];
 };
 
+//run assigngear on all units
 allunits call bg_fnc_assigngearglobal;
+
+
+//assorted ai wrangling
+
+
+
 
 
 namdar addeventhandler ["Killed", {

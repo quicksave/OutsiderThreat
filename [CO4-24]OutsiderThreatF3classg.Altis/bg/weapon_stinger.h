@@ -1,9 +1,5 @@
-secondary[] = 
+class stinger : weapon
 {
-	{
-		"rhs_weap_fim92",
-		{
-			{"rhs_fim92_mag",1}
-		}
-	}
+	wepname = "rhs_weap_fim92";
+	defmag = "rhs_fim92_mag";
 };

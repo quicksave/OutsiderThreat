@@ -7,7 +7,7 @@ class blu_f : faction
 		vest[] = {"V_PlateCarrierSpec_mtp"};
 		pack[] = {"B_AssaultPack_mcamo"};
 		
-		#include "weapon_mx.h"
+		class primary : mx {};
 	};
 	
 	class r : base
@@ -17,12 +17,12 @@ class blu_f : faction
 	
 	class rat : r
 	{
-		#include "weapon_m136_hedp.h"
+		class secondary : m136_hedp {};
 	};
 	
 	class ar : r
 	{
-		#include "weapon_mx_sw.h"
+		class primary : mx_sw {};
 	};
 	
 	class aar : r
@@ -38,25 +38,29 @@ class blu_f : faction
 	};
 	class dm : r
 	{
-		#include "weapon_mxm.h"
+		class primary : mxm {};
 	};
 	class gren : base
 	{
-		#include "weapon_mx_3gl.h"
+		class primary : mx_3gl {};
 		mags[] = {{"HandGrenade",2}, {"SmokeShell", 4}};
 	};
 	
 	class ftl : gren
 	{
 		helmet[] = {"H_HelmetSpecB_sand","H_HelmetSpecB_paint1", "H_HelmetSpecB_paint2"};
-		primaryattach[] = {{"optic_Arco"}};
+		
+		class primary : mx_3gl
+		{
+			optic = "optic_Arco";
+		};
 	};
 	class dc : ftl {};
 	class co : dc {};
 	
 	class mmgg : r
 	{
-		#include "weapon_spmg.h"
+		class primary : spmg {};
 	};
 	class mmgag : aar
 	{
@@ -74,7 +78,7 @@ class blu_f : faction
 	
 	class matg : r
 	{
-		#include "weapon_titanc.h"
+		class secondary : titanc {};
 		pack[] = {"B_Carryall_mcamo"};
 	};
 	class matag : aar
@@ -93,7 +97,7 @@ class blu_f : faction
 	
 	class msamg : r
 	{
-		#include "weapon_titanaa.h"
+		class secondary : titanaa {};
 		pack[] = {"B_Carryall_mcamo"};
 	};
 	class msamag : aar

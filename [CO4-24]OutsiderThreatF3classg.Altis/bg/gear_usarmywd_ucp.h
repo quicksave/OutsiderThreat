@@ -1,13 +1,13 @@
-class rhs_faction_usarmy_wd : rhs_faction_usarmy_d
+class rhs_faction_usarmy_wd : faction
 {
-	class base : base
+	class base : type
 	{
 		uniform[] = {"rhs_uniform_cu_ucp"};
 		helmet[] = {"rhsusf_ach_helmet_ucp"};
 		vest[] = {"rhsusf_iotv_ucp_Rifleman"};
 		pack[] = {"rhsusf_assault_eagleaiii_ucp"};
 		
-		#include "weapon_m16a4.h"
+		class primary : m16a4 {};
 	};
 	
 	class r : base
@@ -17,35 +17,38 @@ class rhs_faction_usarmy_wd : rhs_faction_usarmy_d
 	
 	class rat : r
 	{
-		#include "weapon_m136_hedp.h"
+		class secondary : m136_hedp {};
 	};
 	
 	class ar : r
 	{
-		#include "weapon_m249.h"
+		class primary : m249 {};
 		vest[] = {"rhsusf_iotv_ucp_SAW"};
 	};
 	
 	class aar : r
 	{
-		pack[] = {"rhsusf_assault_eagleaiii_ucp"};
 		packmags[] = {{"rhs_200rnd_556x45_M_SAW",1},{"rhs_200rnd_556x45_T_SAW",2}};
 		binos[] = {"Binocular"};
 	};
 	
 	class m : base
 	{
-		packitems[] = {{"Medikit",1}};
+		packitems[] = {{"Medikit",1},{"FirstAidKit",10}};
 		mags[] = {{"rhs_mag_an_m8hc", 6}};
 		vest[] = {"rhsusf_iotv_ucp_Medic"};
 	};
 	class dm : r
 	{
-		primaryattach[] = {{"RH_ta31rco","rhsusf_acc_harris_bipod"}};
+		class primary : m16a4
+		{
+			optic = "RH_ta31rco";
+			bipod = "rhsusf_acc_harris_bipod";
+		};
 	};
 	class gren : base
 	{
-		#include "weapon_m4a1_gl.h"
+		class priamry : m16a4_m203 {};
 		mags[] = {{"rhs_mag_m67",2}, {"rhs_mag_an_m8hc", 3}};
 		vest[] = {"rhsusf_iotv_ucp_Grenadier"};
 	};
@@ -56,14 +59,17 @@ class rhs_faction_usarmy_wd : rhs_faction_usarmy_d
 	};
 	class dc : ftl
 	{
-		primaryattach[] = {{"RH_ta31rco"}};
+		class priamry : m16a4_m203
+		{
+			optic = "RH_ta31rco";
+		};
 		vest[] = {"rhsusf_iotv_ucp_Squadleader"};
 	};
 	class co : dc {};
 	
 	class mmgg : r
 	{
-		#include "weapon_m240.h"
+		class primary : m240 {};
 	};
 	class mmgag : aar
 	{
@@ -81,7 +87,7 @@ class rhs_faction_usarmy_wd : rhs_faction_usarmy_d
 	
 	class matg : r
 	{
-		#include "weapon_maaws.h"
+		class secondary : maaws {};
 	};
 	class matag : aar
 	{
@@ -99,7 +105,7 @@ class rhs_faction_usarmy_wd : rhs_faction_usarmy_d
 	
 	class msamg : r
 	{
-		#include "weapon_stinger.h"
+		class secondary : stinger {};
 	};
 	class msamag : aar
 	{

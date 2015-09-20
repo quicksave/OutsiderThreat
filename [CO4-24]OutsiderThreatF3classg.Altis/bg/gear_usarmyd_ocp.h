@@ -7,7 +7,7 @@ class rhs_faction_usarmy_d : faction
 		vest[] = {"rhsusf_iotv_ocp_Rifleman"};
 		pack[] = {"rhsusf_assault_eagleaiii_ocp"};
 		
-		#include "weapon_m4a1.h"
+		class primary : m4a1 {};
 	};
 	
 	class r : base
@@ -17,12 +17,12 @@ class rhs_faction_usarmy_d : faction
 	
 	class rat : r
 	{
-		#include "weapon_m136_hedp.h"
+		class secondary : m136_hedp {};
 	};
 	
 	class ar : r
 	{
-		#include "weapon_m249.h"
+		class primary : m249 {};
 		vest[] = {"rhsusf_iotv_ocp_SAW"};
 	};
 	
@@ -40,11 +40,15 @@ class rhs_faction_usarmy_d : faction
 	};
 	class dm : r
 	{
-		primaryattach[] = {{"RH_ta31rco","rhsusf_acc_harris_bipod"}};
+		class primary : m4a1
+		{
+			optic = "RH_ta31rco";
+			bipod = "rhsusf_acc_harris_bipod";
+		};
 	};
 	class gren : base
 	{
-		#include "weapon_m4a1_gl.h"
+		class priamry : m4a1_m320 {};
 		mags[] = {{"rhs_mag_m67",2}, {"rhs_mag_an_m8hc", 3}};
 		vest[] = {"rhsusf_iotv_ocp_Grenadier"};
 	};
@@ -55,14 +59,17 @@ class rhs_faction_usarmy_d : faction
 	};
 	class dc : ftl
 	{
-		primaryattach[] = {{"RH_ta31rco"}};
+		class priamry : m4a1_m320
+		{
+			optic = "RH_ta31rco";
+		};
 		vest[] = {"rhsusf_iotv_ocp_Squadleader"};
 	};
 	class co : dc {};
 	
 	class mmgg : r
 	{
-		#include "weapon_m240.h"
+		class primary : m240 {};
 	};
 	class mmgag : aar
 	{
@@ -80,7 +87,7 @@ class rhs_faction_usarmy_d : faction
 	
 	class matg : r
 	{
-		#include "weapon_maaws.h"
+		class secondary : maaws {};
 	};
 	class matag : aar
 	{
@@ -98,7 +105,7 @@ class rhs_faction_usarmy_d : faction
 	
 	class msamg : r
 	{
-		#include "weapon_stinger.h"
+		class secondary : stinger {};
 	};
 	class msamag : aar
 	{

@@ -1,12 +1,7 @@
-secondary[] = 
+class rpg7 : weapon
 {
-	{
-		"rhs_weap_rpg7",
-		{
-			{"rhs_rpg7_PG7VL_mag",3}
-		},
-		{
-			{"rhs_acc_pgo7v"}
-		}
-	}
+	wepname = "rhs_weap_rpg7";
+	defmag = "rhs_rpg7_PG7VL_mag";
+	extradefmags = 2;
+	optic = "rhs_acc_pgo7v";
 };

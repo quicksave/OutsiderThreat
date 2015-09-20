@@ -1,9 +1,6 @@
-primary[] = 
+class m249 : weapon
 {
-	{
-		"hlc_m249_pip4",
-		{
-			{"hlc_200rnd_556x45_M_SAW",3}
-		}
-	}
+	wepname = "hlc_m249_pip4";
+	defmag = "hlc_200rnd_556x45_M_SAW";
+	extradefmags = 2;
 };

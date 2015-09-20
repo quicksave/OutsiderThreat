@@ -1,6 +1,55 @@
 class bg_loadout_define 
 {
-	class side // superclass
+	class weapon
+	{
+		wepname = "";
+		
+		defmag = ""; // 1 mag of this classname will be loaded in the weapon
+		extradefmags = 0; // additional mags of defmag type to add
+		
+		defglmag = "";
+		extradefglmags = 0;
+		
+		addmags[] = {{"",0}};
+		
+		optic = "";
+		rail = "";
+		bipod = "";
+		muzzle = "";
+	};
+	
+	//rifles
+	#include "weapon_mx.h"
+	#include "weapon_mk20.h"
+	#include "weapon_katiba.h"
+	#include "weapon_trg.h"
+	#include "weapon_ak74m.h"
+	#include "weapon_m4a1.h"
+	#include "weapon_m16a4.h"
+	
+	//autorifles/MGs
+	#include "weapon_spmg.h"
+	#include "weapon_mk200.h"
+	#include "weapon_navid.h"
+	#include "weapon_zafir.h"
+	#include "weapon_rpk.h"
+	#include "weapon_pkp.h"
+	#include "weapon_m249.h"
+	#include "weapon_m240.h"
+	
+	//launchers
+	#include "weapon_m136.h"
+	#include "weapon_titan.h"
+	#include "weapon_nlaw.h"
+	#include "weapon_maaws.h"
+	#include "weapon_igla.h"
+	#include "weapon_rpg26.h"
+	#include "weapon_rpg42.h"
+	#include "weapon_rpg7.h"
+	#include "weapon_stinger.h"
+	
+	
+	class side
 	{
 		class faction
 		{
@@ -24,13 +73,6 @@ class bg_loadout_define
 				packitems[] = {{"",0}};
 				items[] = {{"",0}};
 				mags[] = {{"",0}};
-				
-				primary[] = {{"",{{"",0}},{{""}}}};
-				primaryattach[] = {{"none"}};
-				handgun[] = {{"",{{"",0}},{{""}}}};
-				handgunattach[] = {{"none"}};
-				secondary[] = {{"",{{"",0}},{{""}}}};
-				secondaryattach[] = {{"none"}};
 			};
 			class cargotype
 			{
@@ -53,7 +95,7 @@ class bg_loadout_define
 				// and redefining an entire property to add one thing is dumb
 			};
 		};
-	}; // define subclasses below
+	};
 	
 	class west : side
 	{

@@ -1,9 +1,6 @@
-secondary[] = 
+class maaws : weapon 
 {
-	{
-		"MAAWS",
-		{
-			{"MAAWS_HEDP",2}
-		}
-	}
+	wepname = "MAAWS";
+	defmag = "MAAWS_HEDP";
+	extradefmags = 1;
 };

@@ -1,9 +1,6 @@
-primary[] = 
+class pkp : weapon
 {
-	{
-		"rhs_weap_pkp",
-		{
-			{"rhs_100Rnd_762x54mmR",4}
-		}
-	}
+	wepname = "rhs_weap_pkp";
+	defmag = "rhs_100Rnd_762x54mmR";
+	exrtadefmags = 3;
 };

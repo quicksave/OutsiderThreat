@@ -831,7 +831,7 @@ class Mission
 						};
 						class Item3
 						{
-							value="1.5";
+							value="1.4";
 							parentCls="AGM_ModuleMedical";
 							typeName="CoefNonMedic";
 						};

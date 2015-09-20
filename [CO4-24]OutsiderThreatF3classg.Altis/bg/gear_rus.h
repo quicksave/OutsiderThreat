@@ -7,7 +7,7 @@ class rhs_faction_msv : faction
 		vest[] = {"rhs_6b13_Flora_6sh92"};
 		pack[] = {"rhs_sidor"};
 		
-		#include "weapon_ak74m.h"
+		class primary : ak74m {};
 	};
 	
 	class r : base
@@ -17,12 +17,12 @@ class rhs_faction_msv : faction
 	
 	class rat : r
 	{
-		#include "weapon_rpg26.h"
+		class secondary : rpg26 {};
 	};
 	
 	class ar : r
 	{
-		#include "weapon_rpk74.h"
+		class primary : rpk74 {};
 	};
 	
 	class aar : r
@@ -39,11 +39,14 @@ class rhs_faction_msv : faction
 	};
 	class dm : r
 	{
-		primaryattach[] = {{"rhs_acc_pso1m2"}};
+		class primary : ak74m
+		{
+			optic = "rhs_acc_pso1m2";
+		};
 	};
 	class gren : base
 	{
-		#include "weapon_ak74m_gp.h"
+		class primary : ak74m_gp {};
 		mags[] = {{"rhs_mag_rgd5",2}, {"rhs_mag_rdg2_white",3}};
 		vest[] = {"rhs_6b13_Flora_6sh92_vog"};
 	};
@@ -54,13 +57,16 @@ class rhs_faction_msv : faction
 	};
 	class dc : ftl
 	{
-		primaryattach[] = {{"rhs_acc_pso1m2"}};
+		class primary : ak74m_gp
+		{
+			optic = "rhs_acc_pso1m2";
+		};
 	};
 	class co : dc {};
 	
 	class mmgg : r
 	{
-		#include "weapon_pkp.h"
+		class primary : pkp {};
 	};
 	class mmgag : aar
 	{
@@ -79,7 +85,7 @@ class rhs_faction_msv : faction
 	class matg : r
 	{
 		pack[] = {"rhs_rpg_empty"};
-		#include "weapon_rpg7.h"
+		class secondary : rpg7 {};
 	};
 	class matag : aar
 	{
@@ -98,7 +104,7 @@ class rhs_faction_msv : faction
 	
 	class msamg : r
 	{
-		#include "weapon_igla.h"
+		class secondary : igla {};
 		packmags[] = {{"rhs_mag_9k38_rocket",1}};
 	};
 	class msamag : aar

@@ -7,65 +7,69 @@ class ind_f : faction
 		vest[] = {"V_PlateCarrierIAGL_dgtl", "V_PlateCarrierIA2_dgtl"};
 		pack[] = {"B_AssaultPack_dgtl"};
 		
-		#include "weapon_mk20.h"
+		class primary : mk20 {};
 	};
 
 	class r : base
 	{
 		mags[] = {{"HandGrenade",2}, {"MiniGrenade",2}, {"SmokeShell", 2}};
-		pack[] = {""};
 	};
 	
 	class rat : r
 	{
-		#include "weapon_nlaw.h"
+		class secondary : nlaw {};
 	};
 	
 	class ar : r
 	{
-		#include "weapon_mk200.h"
+		class primary : mk200 {};
 	};
 	
 	class aar : r
 	{
-		pack[] = {"B_AssaultPack_dgtl"};
 		packmags[] = {{"200Rnd_65x39_cased_Box",2}};
 		binos[] = {"Binocular"};
 	};
 	
 	class m : base
 	{
-		pack[] = {"B_AssaultPack_dgtl"};
 		packitems[] = {{"Medikit",1},{"FirstAidKit",10}};
 		mags[] = {{"SmokeShell", 6}};
 		vest[] = {"V_PlateCarrierIA1_dgtl"};
 	};
 	class dm : r
 	{
-		primaryattach[] = {{"optic_MRCO"}};
-		pack[] = {""};
+		class primary : primary
+		{
+			optic = "optic_MRCO";
+		};
 	};
 	class gren : base
 	{
-		#include "weapon_mk20_gl.h"
+		class primary : mk20_gl {};
 		pack[] = {"B_AssaultPack_dgtl"};
 		mags[] = {{"HandGrenade",2}, {"SmokeShell",3}};
 		vest[] = {"V_PlateCarrierIAGL_dgtl"};
 	};
 	
-	class ftl : gren {};
+	class ftl : gren{};
 	class dc : ftl
 	{
+		class primary : mk20_gl
+		{
+			optic = "optic_MRCO";
+		};
 		vest[] = {"V_PlateCarrierIA2_dgtl"};
-		primaryattach[] = {{"optic_MRCO"}};
 	};
 	class co : dc {};
 	
 	class mmgg : r
 	{
 		primaryattach[] = {{"RH_TD_ACB_b"}};
-		#include "weapon_spmg_black.h"
-		pack[] = {"B_AssaultPack_dgtl"};
+		class primary : spmg_blk
+		{
+			bipod = "RH_TD_ACB_b";
+		};
 	};
 	class mmgag : aar
 	{
@@ -84,7 +88,7 @@ class ind_f : faction
 	class matg : r
 	{
 		pack[] = {"B_AssaultPack_dgtl"};
-		#include "weapon_maaws.h"
+		class secondary : maaws {};
 	};
 	class matag : aar
 	{
@@ -102,7 +106,7 @@ class ind_f : faction
 	
 	class msamg : r
 	{
-		#include "weapon_igla.h"
+		class secondary : igla {};
 		pack[] = {"B_AssaultPack_dgtl"};
 		packmags[] = {{"rhs_mag_9k38_rocket",1}};
 	};

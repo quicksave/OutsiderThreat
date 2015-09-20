@@ -1,9 +1,6 @@
-secondary[] = 
+class igla : weapon
 {
-	{
-		"rhs_weap_igla",
-		{
-			{"rhs_mag_9k38_rocket",2}
-		}
-	}
+	wepname = "rhs_weap_igla";
+	defmag = "rhs_mag_9k38_rocket";
+	extradefmags = 1;
 };

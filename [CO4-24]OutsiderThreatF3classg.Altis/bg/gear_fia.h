@@ -18,7 +18,7 @@ class blu_g_f : faction
 		vest[] = {"V_TacVest_blk","V_TacVest_oli","V_TacVest_khk","V_I_G_resistanceLeader_F"};
 		pack[] = {"B_AssaultPack_rgr","B_TacticalPack_oli","B_TacticalPack_blk","B_TacticalPack_rgr"};
 		
-		#include "weapon_random_fia.h"
+		class primary : trg21 {};
 	};
 	
 	class r : base
@@ -28,12 +28,12 @@ class blu_g_f : faction
 	
 	class rat : r
 	{
-		#include "weapon_m136_hedp.h"
+		class secondary : m136_hedp {};
 	};
 	
 	class ar : r
 	{
-		#include "weapon_mk200.h"
+		class primary : mk200 {};
 	};
 	
 	class aar : r
@@ -51,12 +51,14 @@ class blu_g_f : faction
 	};
 	class dm : r
 	{
-		#include "weapon_trg21.h"
-		primaryattach[] = {{"optic_MRCO"}};
+		class primary : primary
+		{
+			optic = "optic_MRCO";
+		};
 	};
 	class gren : base
 	{
-		#include "weapon_trg21_gl.h"
+		class primary : trg21_gl {};
 		mags[] = {{"HandGrenade",2}, {"SmokeShell",3}};
 	};
 	
@@ -67,14 +69,18 @@ class blu_g_f : faction
 	class dc : ftl
 	{
 		helmet[] = {"H_Cap_headphones"};
-		primaryattach[] = {{"optic_MRCO"}};
+		class primary : trg21_gl {
+			optic = "optic_MRCO";
+		};
 	};
 	class co : dc {};
 	
 	class mmgg : r
 	{
-		primaryattach[] = {{"RH_TD_ACB_b"}};
-		#include "weapon_spmg_black.h"
+		class primary : spmg_blk
+		{
+			bipod = "RH_TD_ACB_b";
+		};
 	};
 	class mmgag : aar
 	{
@@ -92,7 +98,7 @@ class blu_g_f : faction
 	
 	class matg : r
 	{
-		#include "weapon_rpg42.h"
+		class secondary : rpg42 {};
 	};
 	class matag : aar
 	{
@@ -110,7 +116,7 @@ class blu_g_f : faction
 	
 	class msamg : r
 	{
-		#include "weapon_titanaa.h"
+		class secondary : titanaa {};
 	};
 	class msamag : aar
 	{

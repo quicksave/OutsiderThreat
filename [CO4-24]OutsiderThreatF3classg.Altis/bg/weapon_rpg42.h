@@ -1,9 +1,6 @@
-secondary[] = 
+class rpg42 : weapon
 {
-	{
-		"launch_RPG32_F",
-		{
-			{"RPG32_F",3}
-		}
-	}
+	wepname = "launch_RPG32_F";
+	defmag = "RPG32_F";
+	extradefmags = 2;
 };

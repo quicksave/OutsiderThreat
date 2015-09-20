@@ -6,7 +6,7 @@ class opf_f : faction
 		vest[] = {"V_HarnessO_brn"};
 		pack[] = {"B_AssaultPack_ocamo"};
 		
-		#include "weapon_katiba.h"
+		class primary : katiba {};
 	};
 	
 	class r : base
@@ -16,17 +16,16 @@ class opf_f : faction
 	
 	class rat : r
 	{
-		#include "weapon_rpg26.h"
+		class secondary : rpg26 {};
 	};
 	
 	class ar : r
 	{
-		#include "weapon_zafir.h"
+		class primary : zafir {};
 	};
 	
 	class aar : r
 	{
-		pack[] = {"B_AssaultPack_ocamo"};
 		packmags[] = {{"150Rnd_762x54_Box",1}, {"150Rnd_762x54_Box_Tracer",1}};
 		binos[] = {"Binocular"};
 	};
@@ -35,15 +34,17 @@ class opf_f : faction
 	{
 		packitems[] = {{"Medikit",1},{"FirstAidKit",10}};
 		mags[] = {{"SmokeShell", 6}};
-		pack[] = {"B_AssaultPack_ocamo"};
 	};
 	class dm : r
 	{
-		primaryattach[] = {{"optic_Hamr"}};
+		class primary : primary
+		{
+			optic = "optic_Hamr";
+		};
 	};
 	class gren : base
 	{
-		#include "weapon_katiba_gl.h"
+		class primary : katiba_gl {};
 		mags[] = {{"HandGrenade",2}, {"SmokeShell",3}};
 		vest[] = {"V_HarnessOGL_brn"};
 	};
@@ -51,14 +52,16 @@ class opf_f : faction
 	class ftl : gren {};
 	class dc : ftl
 	{
-		primaryattach[] = {{"optic_Hamr"}};
+		class primary : katiba_gl
+		{
+			optic = "optic_Hamr";
+		};
 	};
 	class co : dc {};
 	
 	class mmgg : r
 	{
-		#include "weapon_navid.h"
-		pack[] = {"B_AssaultPack_ocamo"};
+		class primary : navid {};
 	};
 	class mmgag : aar
 	{
@@ -76,8 +79,7 @@ class opf_f : faction
 	
 	class matg : r
 	{
-		#include "weapon_rpg42.h"
-		pack[] = {"B_AssaultPack_ocamo"};
+		class secondary : rpg42 {};
 	};
 	class matag : aar
 	{
@@ -95,8 +97,7 @@ class opf_f : faction
 	
 	class msamg : r
 	{
-		#include "weapon_titanaa.h"
-		pack[] = {"B_AssaultPack_ocamo"};
+		class secondary : titanaa_brn {};
 		packmags[] = {{"Titan_AA",1}};
 	};
 	class msamag : aar

@@ -1,9 +1,9 @@
-secondary[] = 
+class rpg26 : weapon
 {
-	{
-		"rhs_weap_rpg26",
-		{
-			{"rhs_rpg26_mag",1}
-		}
-	}
+	wepname = "rhs_weap_rpg26";
+};
+
+class rshg2 : weapon
+{
+	wepname = "rhs_weap_rshg2";
 };
