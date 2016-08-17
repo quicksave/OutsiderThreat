@@ -44,10 +44,39 @@ respawnTemplates[] = {"Group","Spectator","f_JIP","EndMission"};
 // ============================================================================================
 
 // F3 - Folk Assign Gear Script
-// Removed
+// Credits: Please see the F2 online manual (http://www.ferstaberinde.com/f3/en/)
+// Parameter Removed
 
-// loadout classes
+// uncomment + change lines in bgmf_equip and bgmf_uniform to set gear based on receiving unit's side
+// else, gear is determined by unit faction
+// see the file below for more info on loadouts + factions
 #include "bg\bg_loadout_define.h"
+
+// available equipment sets:
+// nato, csat, aaf, civ, fia, rus, usarmyocp, usarmyucp
+
+// available uniform sets:
+// nato, csat, aaf, civ, fia, rus, usarmyocp, usarmyucp
+
+// equipment class properties set that side's goggles, binos, map, terminal, radio, compass, watch, items, and mags
+class bgmf_equip
+{
+	west = "nato";
+	east = "csat";
+	guer = "aaf";
+	civ = "fia";
+};
+
+// uniform class properties set that side's uniform, vest, pack, helmet, and facewear
+class bgmf_uniform
+{
+	west = "nato";
+    east = "csat";
+    guer = "aaf";
+    civ  = "fia";
+};
+
+// ============================================================================================
 
 // F3 - Start of Notifications block.
 
@@ -150,17 +179,6 @@ class Params
 
 // ============================================================================================
 
-	class f_param_specialist_markers
-    {
-            title = "Specialist map markers";
-            values[] = {0,1};
-            texts[] = {"Off","On (please no)"};
-            default = 0;
-            code = "f_var_specialist_markers = %1";
-    };
-
-// ============================================================================================
-
 // F3 - Radio Systems Support
 // Removed
 // ============================================================================================
@@ -237,35 +255,6 @@ class Params
 		code = "f_param_caching = %1";
 	};
 	
-// ============================================================================================
-// mission specific
-
-	class difficulty
-	{
-		title = "Difficulty: Select number of players.";
-		values[] = {1, 2, 3, 4};
-		texts[] = {"4", "8", "12", "24"};
-		default = 1;
-		code = "bg_param_difficulty = %1";
-	};
-	
-	class bg_param_westfaction
-	{
-		title = "Player faction";
-		values[] = {0,1,2,3,4,5,6,7};
-		texts[] = {"Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)"};
-		default = 0;
-		code = "bg_param_westfaction = %1";
-	};
-	class bg_param_eastfaction
-	{
-		title = "Enemy faction";
-		values[] = {0,1,2,3,4,5,6,7};
-		texts[] = {"Random","NATO","US Army (UCP/digicam) (M16)","US Army (OCP/multicam) (M4)","FIA","AAF", "CSAT", "Russian (RHS)"};
-		default = 0;
-		code = "bg_param_eastfaction = %1";
-	};
-
 // ============================================================================================
 
 // F3 - End of Params code blocks.
@@ -462,7 +451,6 @@ class CfgFunctions
 
 			class assigngear{};
 			class assigngearglobal{};
-			class ranpos{};
 		};
 	};
 	
