@@ -8,7 +8,7 @@ class EditorData
 	toggles=1;
 	class ItemIDProvider
 	{
-		nextID=251;
+		nextID=249;
 	};
 	class MarkerIDProvider
 	{
@@ -16,10 +16,10 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={23588.568,99.165535,17709.473};
-		dir[]={0.68800956,-0.39948452,0.60592222};
-		up[]={0.29984558,0.91671079,0.26407188};
-		aside[]={0.66094488,4.0943269e-007,-0.75048721};
+		pos[]={23599.732,64.74292,17803.828};
+		dir[]={0.83961701,-0.4491812,0.30552664};
+		up[]={0.42215163,0.89341533,0.15361732};
+		aside[]={0.34196246,3.9092265e-007,-0.93974555};
 	};
 };
 binarizationWanted=0;
@@ -60,188 +60,10 @@ class ScenarioData
 {
 	author="jorsh";
 	saving=0;
-	class Header
-	{
-		gameType="Coop";
-	};
 };
 class CustomAttributes
 {
 	class Category0
-	{
-		name="Multiplayer";
-		class Attribute0
-		{
-			property="RespawnTemplates";
-			expression="true";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"ARRAY"
-						};
-					};
-					class value
-					{
-						items=1;
-						class Item0
-						{
-							class data
-							{
-								class type
-								{
-									type[]=
-									{
-										"STRING"
-									};
-								};
-								value="None";
-							};
-						};
-					};
-				};
-			};
-		};
-		class Attribute1
-		{
-			property="SharedObjectives";
-			expression="if (isMultiplayer) then {[_value] spawn bis_fnc_sharedObjectives;};";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"SCALAR"
-						};
-					};
-					value=0;
-				};
-			};
-		};
-		class Attribute2
-		{
-			property="RespawnButton";
-			expression="true";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"SCALAR"
-						};
-					};
-					value=1;
-				};
-			};
-		};
-		class Attribute3
-		{
-			property="Enh_saveGearPlayers";
-			expression="      if (!is3DEN && _value && isMultiplayer) then      {         {            if (isNil {player getVariable 'Enh_savedLoadout'}) then            {               player setVariable ['Enh_savedLoadout',getUnitloadout player];               player addEventHandler ['respawn',{player setUnitLoadout (player getVariable 'Enh_savedLoadout')}];            }         } remoteExec ['call',0,true];      };   ";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"BOOL"
-						};
-					};
-					value=0;
-				};
-			};
-		};
-		class Attribute4
-		{
-			property="Enh_respawnTickets_independent";
-			expression="if (!is3DEN && isMultiplayer) then {[independent,_value] call BIS_fnc_respawnTickets};";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"SCALAR"
-						};
-					};
-					value=0;
-				};
-			};
-		};
-		class Attribute5
-		{
-			property="Enh_respawnTickets_east";
-			expression="if (!is3DEN && isMultiplayer) then {[east,_value] call BIS_fnc_respawnTickets};";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"SCALAR"
-						};
-					};
-					value=0;
-				};
-			};
-		};
-		class Attribute6
-		{
-			property="Enh_dynamicGroups";
-			expression="				if (!is3DEN && _value && isMultiplayer) then				{					if (isServer) then					{						['Initialize'] call BIS_fnc_dynamicGroups;					};					{						['InitializePlayer',[player]] call BIS_fnc_dynamicGroups;					} remoteExec ['BIS_fnc_spawn',-2,true];				};			";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"BOOL"
-						};
-					};
-					value=0;
-				};
-			};
-		};
-		class Attribute7
-		{
-			property="Enh_respawnTickets_west";
-			expression="if (!is3DEN && isMultiplayer) then {[west,_value] call BIS_fnc_respawnTickets};";
-			class Value
-			{
-				class data
-				{
-					class type
-					{
-						type[]=
-						{
-							"SCALAR"
-						};
-					};
-					value=0;
-				};
-			};
-		};
-		nAttributes=8;
-	};
-	class Category1
 	{
 		name="Scenario";
 		class Attribute0
@@ -618,7 +440,7 @@ class Mission
 {
 	class Intel
 	{
-		briefingName="[CO4-24]OutsiderThreatv9";
+		briefingName="[CO4-24]OutsiderThreatv7";
 		overviewText="Attack a randomized enemy position, search the courier and exfiltrate.";
 		resistanceWest=0;
 		resistanceEast=1;

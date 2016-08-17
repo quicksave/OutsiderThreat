@@ -6,13 +6,15 @@
 // SERVER CHECK
 // Make sure that the script is only run on the server
 
-if !(isServer) exitWith {};
+// disabled because i'm insanely lazy
+
+//if !(isServer) exitWith {};
 
 // ====================================================================================
 
 // DECLARE PRIVATE VARIABLES
 
-private ["_units","_unit","_faction","_known","_unitFactions","_unitClasses","_unitside", "_unitfaction", "_code", "_geararray"];
+private ["_units","_unit","_faction","_known","_unitfactions","_unitClasses","_unitside", "_unitfaction", "_code", "_geararray"];
 
 // ====================================================================================
 
@@ -20,8 +22,8 @@ private ["_units","_unit","_faction","_known","_unitFactions","_unitClasses","_u
 
 // The factions of all units which should be affected
 
-//need to populate this from missionconfig
-_unitFactions = ["","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv", "ind_g_f", "opf_g_f"];
+//need to populate this from missionconfig?
+_unitfactions = ["","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv", "LIB_RKKA", "LIB_WEHRMACHT"];
 
 // The default gear type picked when no corresponding entry is found in the _unitClasses array
 // Set _defaultclass to "" to let these units keep their default gear
@@ -83,7 +85,7 @@ if (typename _this == "OBJECT" || typename _this == "ARRAY") then
 }
 else
 {
-	_units = if (count _this == 0) then [{waitUntil {scriptDone f_script_setLocalVars};f_var_men},{_this}];
+	_units = if (count _this == 0) then {waitUntil {scriptDone f_script_setLocalVars}; f_var_men} else {_this};
 };
 
 // LOOP THROUGH ALL UNITS AND ASSIGN GEAR
@@ -103,11 +105,11 @@ else
 		{
 			_known = [toLower (_x select 0),toLower (typeOf _unit)] call BIS_fnc_inString;
 
-			// If the unit's classname corresponds to a class in the assignment array, set it's gear accordingly
+			// If the unit's classname corresponds to a class in the assignment array, set its gear accordingly
 			if (_known) exitWith {
 			
 				_geararray = [_x select 1, _unit];
-				if (_unitfaction != "") then {_geararray append [_unitfaction]};
+				if (_unitfaction != "") then {_geararray append [_unitfaction,_unitfaction]};
 				
 				[_geararray, "bg_fnc_assignGear", _unit,false,true] call BIS_fnc_MP;
 			};
@@ -118,7 +120,7 @@ else
 			if (_defaultclass != "") then {
 				
 				_geararray = [_defaultclass, _unit];
-				if (_unitfaction != "") then {_geararray append [_unitfaction]};
+				if (_unitfaction != "") then {_geararray append [_unitfaction,_unitfaction]};
 			
 				[_geararray, "bg_fnc_assigngear", _unit,false,true] call BIS_fnc_MP;
 			};

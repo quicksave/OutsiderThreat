@@ -1,3 +1,8 @@
+//
+// set unit type in f3 unit type variable in unit ini
+// run gear through the factionparam parameter function property
+//
+
 saving = 0;
 
 // ============================================================================================
@@ -19,7 +24,7 @@ class Header
 
 onLoadName = "outsider threat";
 onLoadMission = "A CLASSIC KNOCKOVER";
-author = "jorsh";
+
 loadScreen = "loadLogo.jpg";
 overviewPicture = "overviewLogo.jpg";
 overviewText = "Attack a randomized enemy position, search the courier and exfiltrate.";
@@ -48,6 +53,8 @@ respawnTemplates[] = {"Group","Spectator","f_JIP","EndMission"};
 
 // loadout classes
 #include "bg\bg_loadout_define.h"
+
+// ============================================================================================
 
 // F3 - Start of Notifications block.
 
@@ -150,17 +157,6 @@ class Params
 
 // ============================================================================================
 
-	class f_param_specialist_markers
-    {
-            title = "Specialist map markers";
-            values[] = {0,1};
-            texts[] = {"Off","On (please no)"};
-            default = 0;
-            code = "f_var_specialist_markers = %1";
-    };
-
-// ============================================================================================
-
 // F3 - Radio Systems Support
 // Removed
 // ============================================================================================
@@ -211,9 +207,9 @@ class Params
     class f_param_timeOfDay
 	{
 		title = "$STR_f_param_timeOfDay";
-		values[] = {4.6,12,18,0};
-		texts[] = {"Morning","Midday","Evening","Midnight"};
-		default = 4.6;
+		values[] = {0,1,2,3,4,5,6,7};
+		texts[] = {$STR_f_param_timeOfDay_Option0,$STR_f_param_timeOfDay_Option1,$STR_f_param_timeOfDay_Option2,$STR_f_param_timeOfDay_Option3,$STR_f_param_timeOfDay_Option4,$STR_f_param_timeOfDay_Option5,$STR_f_param_timeOfDay_Option6,$STR_f_param_timeOfDay_Option7};
+		default = 4;
 		function = "f_fnc_setTime";			// This function is called to apply the values
  		isGlobal = 0;						// Execute this only on the server
  		code = "f_param_timeOfDay = %1";
@@ -252,16 +248,16 @@ class Params
 	class bg_param_westfaction
 	{
 		title = "Player faction";
-		values[] = {0,1,2,3,4,5,6,7};
-		texts[] = {"Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)"};
+		values[] = {0,1,2,3,4,5,6,7,8,9};
+		texts[] = {"Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)","Red Army","Wehrmacht"};
 		default = 0;
 		code = "bg_param_westfaction = %1";
 	};
 	class bg_param_eastfaction
 	{
 		title = "Enemy faction";
-		values[] = {0,1,2,3,4,5,6,7};
-		texts[] = {"Random","NATO","US Army (UCP/digicam) (M16)","US Army (OCP/multicam) (M4)","FIA","AAF", "CSAT", "Russian (RHS)"};
+		values[] = {0,1,2,3,4,5,6,7,8,9};
+		texts[] = {"Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)","Red Army","Wehrmacht"};
 		default = 0;
 		code = "bg_param_eastfaction = %1";
 	};
@@ -463,10 +459,27 @@ class CfgFunctions
 			class assigngear{};
 			class assigngearglobal{};
 			class ranpos{};
+			class spawnMission
+			{
+				//recompile = 1;
+			};
 		};
 	};
 	
+	#include <T8\FUNCTIONS.hpp>
 };
 
-
 // ============================================================================================
+// blatantly stolen from kerc
+
+class CfgMusic
+{
+	tracks[]={};
+
+	class missionstart
+	{
+		name = "";
+		sound[] = {"\music\start.ogg", db+1, 1.0};
+	};
+
+};
