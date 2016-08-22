@@ -34,14 +34,14 @@ asr_ai3_main_joinlast = 1;
 
 
 //handle faction parameter randomization
-// "Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)","Red Army","Wehrmacht"
-_unitfactions = ["random","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv","LIB_RKKA", "LIB_WEHRMACHT"];
+// "Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)","Red Army","Wehrmacht",  "Viper", "Syndikat", "Gendarmerie", "CTRG"
+_unitfactions = ["random","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv", "LIB_RKKA", "LIB_WEHRMACHT","opf_t_f","ind_c_f","blu_gen_f","blu_ctrg_f"];
 _factionparamarray = [];
 for "_i" from 0 to (count _unitfactions - 1) do {_factionparamarray set [count _factionparamarray, _i];};
 
 if (_unitfactions select bg_param_westfaction == "random") then
 {
-	bg_param_westfaction = (_factionparamarray - [bg_param_westfaction]) call bis_fnc_selectrandom;
+	bg_param_westfaction = selectrandom (_factionparamarray - [bg_param_westfaction]);
 	diag_log format ["| assigngear | west faction is %1", _unitfactions select bg_param_westfaction];
 };
 
@@ -50,7 +50,7 @@ if (_unitfactions select bg_param_eastfaction == "random") then
 	_wtc = [bg_param_eastfaction, bg_param_westfaction, 0];
 	if (bg_param_westfaction in [1,2,3]) then { _wtc = _wtc + [1,2,3]};
 	
-	bg_param_eastfaction = (_factionparamarray - _wtc) call bis_fnc_selectrandom;
+	bg_param_eastfaction = selectrandom (_factionparamarray - _wtc);
 	diag_log format ["| assigngear | east faction is %1", _unitfactions select bg_param_eastfaction];
 };
 
@@ -143,4 +143,5 @@ call bg_fnc_spawnMission;
 	
 	
 };
+
 

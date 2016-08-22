@@ -17,10 +17,13 @@
 // ["r",this,"DEFINED_faction", "undefined_faction"] call bg_fnc_assigngear
 // will only affect equipment category items, leaving uniform, vest, backpack, helmet, facewear untouched.
 
+
 private ["_unit"];
 _unit = (_this select 1);
 
+// Depending on locality the script decides if it should run
 if !(local _unit) exitWith {};
+
 scopename "main";
 
 //init vars
@@ -35,17 +38,24 @@ private
 	"_properties", "_classes"
 ];
 
+
 _faction_aliases = 
-  [ ["nato","blu_f"],
-    ["csat","opf_f"],
-    ["fia","blu_g_f"],
-    ["aaf","ind_f"],
-    ["civ","civ_f"],
-    ["usarmyocp","rhs_faction_usarmy_d"],
-    ["usarmyucp","rhs_faction_usarmy_wd"],
-    ["rus","rhs_faction_msv"],
-    ["redarmy","LIB_RKKA"],
-    ["nazi","LIB_WEHRMACHT"] ];
+[
+	["nato","blu_f"],
+	["csat","opf_f"],
+	["fia","blu_g_f"],
+	["aaf","ind_f"],
+	["civ","civ_f"],
+	["usarmyocp","rhs_faction_usarmy_d"],
+	["usarmyucp","rhs_faction_usarmy_wd"],
+	["rus","rhs_faction_msv"],
+	["redarmy","LIB_RKKA"],
+	["nazi","LIB_WEHRMACHT"],
+    ["viper","OPF_T_F"],
+    ["syn","IND_C_F"],
+    ["gen","BLU_GEN_F"],
+    ["ctrg","BLU_CTRG_F"],
+    ["nato_t","BLU_T_F"]  ];
 
 _unit_type = toLower (_this select 0);
 _equip_type = _unit_type;
@@ -59,7 +69,9 @@ _uniform_side = _unitsidestring;
 
 _unit_is_man = _unit iskindof "man";
 
+
 // ============================================================================================
+
 // A public variable is set on the unit, indicating their type. This is mostly relevant for the F3 respawn component
 _unit setVariable ["f_var_assignGear",_unit_type,true];
 
@@ -68,6 +80,8 @@ _unit setVariable ["f_var_assignGear_done",false,true];
 
 // Prevent BIS Randomisation System
 _unit setVariable ["BIS_enableRandomization", false];
+
+
 // ============================================================================================
 
 // side & faction handling
@@ -123,10 +137,10 @@ while {_i < count _faction_aliases && (!_eq_fac_found || !_un_fac_found)} do
 // faction and type class defaulting
 // faction_exists vars also used to determine which gearing commands to use/skip
 
-_uniform_faction_exists = isclass (configfile >> "bg_loadout_define" >> "define_factions">> _uniform_faction);
-_equip_faction_exists = isclass (configfile >> "bg_loadout_define" >> "define_factions">> _equip_faction);
-_equip_type_exists = isclass (configfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction >> _equip_type);
-_uniform_type_exists = isclass (configfile >> "bg_loadout_define" >> "define_factions" >> _uniform_faction >> _uniform_type);
+_uniform_faction_exists = isclass (missionconfigfile >> "bg_loadout_define" >> "define_factions">> _uniform_faction);
+_equip_faction_exists = isclass (missionconfigfile >> "bg_loadout_define" >> "define_factions">> _equip_faction);
+_equip_type_exists = isclass (missionconfigfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction >> _equip_type);
+_uniform_type_exists = isclass (missionconfigfile >> "bg_loadout_define" >> "define_factions" >> _uniform_faction >> _uniform_type);
 
 if !(_uniform_faction_exists) then
 {
@@ -143,7 +157,7 @@ if (!_uniform_faction_exists && !_equip_faction_exists) then {breakout "main";};
 
 if (!_equip_type_exists && _unit_is_man) then
 {
-	_equip_type = configname ((configfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction) select 0);
+	_equip_type = configname ((missionconfigfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction) select 0);
 };
 if (!_equip_type_exists && !_unit_is_man) then
 {
@@ -152,8 +166,9 @@ if (!_equip_type_exists && !_unit_is_man) then
 
 if !(_uniform_type_exists) then
 {
-	_uniform_type = configname ((configfile >> "bg_loadout_define" >> "define_factions" >> _uniform_faction) select 0);
+	_uniform_type = configname ((missionconfigfile >> "bg_loadout_define" >> "define_factions" >> _uniform_faction) select 0);
 };
+
 
 // ============================================================================================
 
@@ -167,7 +182,8 @@ _classes = [];
 
 // for the selected lodaout, collect property paths in one array, class paths in another
 // now separated such that:
-// uniform, vest, pack, helmet, and facewear are from the uniform config, everything else is from the equipment config
+// uniform, vest, pack, helmet, and facewear are from the uniform config
+// everything else is from the equipment config
 
 // !!! if one of the side, faction, or type vars is undefined/nil, configproperties will cause ctd !!!
 
@@ -179,7 +195,7 @@ if _uniform_faction_exists then
 		_properties pushback _x;
 	} foreach configproperties 
 		[
-		configfile >> "bg_loadout_define" >> "define_factions" >> _uniform_faction >> _uniform_type,
+		missionconfigfile >> "bg_loadout_define" >> "define_factions" >> _uniform_faction >> _uniform_type,
 		"!isclass _x && (configname _x) in [""uniform"",""helmet"",""vest"",""pack"",""facewear""]"
 		];
 };
@@ -191,14 +207,15 @@ if _equip_faction_exists then
 		_properties pushback _x;
 	} foreach configproperties 
 		[
-		configfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction >> _equip_type, 
+		missionconfigfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction >> _equip_type, 
 		"!isclass _x && !((configname _x) in [""uniform"",""helmet"",""vest"",""pack"",""facewear""])"
 		];
 
 	// collect class config paths, i.e. weapons
+
 	{
 		_classes pushback _x;
-	} foreach configproperties [configfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction >> _equip_type, "isclass _x"];
+	} foreach configproperties [missionconfigfile >> "bg_loadout_define" >> "define_factions" >> _equip_faction >> _equip_type, "isclass _x"];
 };
 	
 // use the collected property names to define variables of the same name
@@ -236,12 +253,14 @@ if _equip_faction_exists then
 		if (str _x == "[]") then
 		{
 			_wtc = _x;
-			_wtc set [0, (configfile >> "bg_loadout_define" >> "weapon")];
+			_wtc set [0, (missionconfigfile >> "bg_loadout_define" >> "weapon")];
 		};
 	} foreach [_primary,_handgun,_secondary];
 };
 
+
 // ============================================================================================
+
 
 // gear commands
 
@@ -304,7 +323,7 @@ else
 		_secondaryfinal = _secondary select floor(random (count _secondary));
 		_handgunfinal = _handgun select floor(random (count _handgun));
 		
-		_binosfinal = _binos call bis_fnc_selectrandom;
+		_binosfinal = selectrandom _binos;
 		
 		// clear unit
 		
@@ -325,11 +344,12 @@ else
 	{
 		removebackpack _unit;
 		//add containers
-		_unit forceadduniform (_uniform call bis_fnc_selectrandom);
-		_unit addheadgear (_helmet call bis_fnc_selectrandom);
-		_unit addvest (_vest call bis_fnc_selectrandom);
-		_unit addbackpack (_pack call bis_fnc_selectrandom);
+		_unit forceadduniform (selectrandom _uniform);
+		_unit addheadgear (selectrandom _helmet);
+		_unit addvest (selectrandom _vest);
+		_unit addbackpack (selectrandom _pack);
 	};
+	
 	
 	// if equip faction undefined, re-add old inventory
 	if (!_equip_faction_exists && _uniform_faction_exists) then
@@ -344,13 +364,14 @@ else
 		} foreach _unit_magcargo;
 	};
 	
+	
 	if _equip_faction_exists then
 	{
 		//goggles
-		_unit addgoggles (_facewear call bis_fnc_selectrandom);
+		_unit addgoggles (selectrandom _facewear);
 		
 		//linkables
-		{_unit linkitem _x} foreach [_map, _compass, _watch, _radio, _terminal, (_goggles call bis_fnc_selectrandom)];
+		{_unit linkitem _x} foreach [_map, _compass, _watch, _radio, _terminal, (selectrandom _goggles)];
 
 		//items in backpack
 		{
@@ -412,6 +433,7 @@ else
 		{
 			_unit addhandgunitem _x;
 		} foreach [gettext (_handgunfinal >> "optic"),gettext (_handgunfinal >> "rail"),gettext (_handgunfinal >> "bipod"),gettext (_handgunfinal >> "muzzle")];
+		
 	};
 };
 

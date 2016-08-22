@@ -49,7 +49,7 @@ T8u_fnc_bg_gear_target =
 		_this call bg_fnc_assigngearglobal;
 	};
 	
-	_this allowfleeing 0;
+	//_this allowfleeing 0;
 	
 	if (_this iskindof "O_officer_F") then
 	{

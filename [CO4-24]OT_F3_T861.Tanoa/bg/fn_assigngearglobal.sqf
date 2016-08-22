@@ -5,9 +5,7 @@
 
 // SERVER CHECK
 // Make sure that the script is only run on the server
-// disabled, the purpose of this script has changed from when it was f3's
-// i want to run it from initplayerlocal, reduce server load, w/e
-
+// no
 //if !(isServer) exitWith {};
 
 // ====================================================================================
@@ -23,7 +21,7 @@ private ["_units","_unit","_faction","_known","_unitFactions","_unitClasses","_u
 // The factions of all units which should be affected
 
 //need to populate this from missionconfig?
-_unitfactions = ["","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv", "LIB_RKKA", "LIB_WEHRMACHT","OPF_T_F","IND_C_F","BLU_GEN_F","BLU_CTRG_F","BLU_T_F"];
+_unitfactions = ["","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv", "LIB_RKKA", "LIB_WEHRMACHT","opf_t_f","ind_c_f","blu_gen_f","blu_ctrg_f"];
 
 // The default gear type picked when no corresponding entry is found in the _unitClasses array
 // Set _defaultclass to "" to let these units keep their default gear
@@ -97,7 +95,7 @@ else
 	call compile format ["if !(isnil ""bg_param_%1faction"") then {_unitfaction = _unitfactions select bg_param_%1faction};", side _x];
 	
 	// Check if the unit was already touched by the F3 Assign Gear Component
-	if (!(_unit getvariable ["f_var_assignGear_done", false]) && (_unit isKindOf "Man")) then 
+	if (/*!(_unit getvariable ["f_var_assignGear_done", false]) && */(_unit isKindOf "Man")) then 
 	{
 	
 	
@@ -111,7 +109,7 @@ else
 				_geararray = [_x select 1, _unit];
 				if (_unitfaction != "") then {_geararray append [_unitfaction,_unitfaction]};
 				
-				[_geararray] remoteExecCall ["bg_fnc_assigngear", _unit];
+				_geararray remoteExecCall ["bg_fnc_assigngear", _unit];
 			};
 		} forEach _unitClasses;
 
@@ -122,7 +120,7 @@ else
 				_geararray = [_defaultclass, _unit];
 				if (_unitfaction != "") then {_geararray append [_unitfaction,_unitfaction]};
 			
-				[_geararray] remoteExecCall ["bg_fnc_assigngear", _unit];
+				_geararray remoteExecCall ["bg_fnc_assigngear", _unit];
 			};
 		};
 		
