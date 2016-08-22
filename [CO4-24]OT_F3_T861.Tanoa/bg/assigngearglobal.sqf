@@ -6,15 +6,13 @@
 // SERVER CHECK
 // Make sure that the script is only run on the server
 
-// disabled because i'm insanely lazy
-
-//if !(isServer) exitWith {};
+if !(isServer) exitWith {};
 
 // ====================================================================================
 
 // DECLARE PRIVATE VARIABLES
 
-private ["_units","_unit","_faction","_known","_unitfactions","_unitClasses","_unitside", "_unitfaction", "_code", "_geararray"];
+private ["_units","_unit","_faction","_known","_unitFactions","_unitClasses","_unitside", "_unitfaction", "_code", "_geararray"];
 
 // ====================================================================================
 
@@ -85,7 +83,7 @@ if (typename _this == "OBJECT" || typename _this == "ARRAY") then
 }
 else
 {
-	_units = if (count _this == 0) then {waitUntil {scriptDone f_script_setLocalVars}; f_var_men} else {_this};
+	_units = if (count _this == 0) then [{waitUntil {scriptDone f_script_setLocalVars};f_var_men},{_this}];
 };
 
 // LOOP THROUGH ALL UNITS AND ASSIGN GEAR
