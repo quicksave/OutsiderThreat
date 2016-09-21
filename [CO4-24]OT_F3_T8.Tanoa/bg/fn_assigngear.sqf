@@ -357,11 +357,11 @@ else
 		//general items
 		{
 			_unit additem _x;
-		} foreach _unit_itemcargo;
+		} foreach _unit_itemcargo - [""];
 		//general items
 		{
 			_unit addmagazine _x;
-		} foreach _unit_magcargo;
+		} foreach _unit_magcargo - [""];
 	};
 	
 	
@@ -371,7 +371,7 @@ else
 		_unit addgoggles (selectrandom _facewear);
 		
 		//linkables
-		{_unit linkitem _x} foreach [_map, _compass, _watch, _radio, _terminal, (selectrandom _goggles)];
+		{_unit linkitem _x} foreach ([_map, _compass, _watch, _radio, _terminal, (selectrandom _goggles)] - [""]);
 
 		//items in backpack
 		{

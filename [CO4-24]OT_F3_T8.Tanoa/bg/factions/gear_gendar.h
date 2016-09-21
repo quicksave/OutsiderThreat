@@ -2,69 +2,86 @@ class blu_gen_f : faction
 {
 	class base : type
 	{
-		uniform[] = {"U_B_GEN_Soldier_F"};
-		helmet[] = {"H_MilCap_gen_F"};
+		uniform[] = {"U_B_GEN_Commander_F", "U_B_GEN_Soldier_F", "U_B_GEN_Soldier_F"};
+		helmet[] = {"H_Helmet_Skate"};
 		vest[] = {"V_TacVest_gen_F"};
-		pack[] = {""};
+		goggles[] = {"G_Balaclava_TI_blk_F"};
 		
-		class primary : protector {};
+		class primary : protector 
+		{
+			rail = "acc_flashlight";
+		};
 	};
 	
 	class r : base
 	{
-		mags[] = {{"HandGrenade",2}, {"MiniGrenade",2}, {"SmokeShell", 2}};
+		mags[] = {{"rhs_mag_mk84",2}, {"MiniGrenade",2}, {"SmokeShell", 2}};
 	};
-	/*
+	
 	class rat : r
 	{
-		class secondary : m136_hedp {};
+		//class secondary : m136_hedp {};
 	};
 	
 	class ar : r
 	{
-		class primary : mx_sw {};
+		class primary : lim85 {};
+		pack[] = {"B_AssaultPack_blk"};
 	};
 	
 	class aar : r
 	{
-		packmags[] = {{"100Rnd_65x39_caseless_mag",2},{"100Rnd_65x39_caseless_mag_Tracer",1}};
+		pack[] = {"B_AssaultPack_blk"};
+		packmags[] = {{"200Rnd_556x45_Box_Tracer_F",2}};
 		binos[] = {"Binocular"};
 	};
 	
 	class m : base
 	{
+		pack[] = {"B_AssaultPack_blk"};
 		packitems[] = {{"Medikit",1},{"FirstAidKit",10}};
 		mags[] = {{"SmokeShell", 6}};
 	};
+	
 	class dm : r
 	{
-		class primary : mxm {};
+		class primary : spar16 
+		{
+			optic = "optic_ERCO_blk_F";
+			bipod = "RH_TD_ACB_b";
+		};
 	};
+	
 	class gren : base
 	{
-		class primary : mx_3gl {};
-		mags[] = {{"HandGrenade",2}, {"SmokeShell", 4}};
+		class primary : m590 
+		{
+			extradefmags = 4;
+		};
+		mags[] = {{"rhsusf_8Rnd_Slug",4},{"rhs_mag_mk84",2}, {"HandGrenade",2}, {"SmokeShell", 2}};
 	};
 	
 	class ftl : gren
 	{
-		helmet[] = {"H_HelmetSpecB_sand","H_HelmetSpecB_paint1", "H_HelmetSpecB_paint2"};
-		
-		class primary : mx_3gl
-		{
-			optic = "optic_Arco";
-		};
+		uniform[] = {"U_B_GEN_Commander_F"};
+		class hgun : acp {};
 	};
-	class dc : ftl {};
+	
+	class dc : r 
+	{
+		uniform[] = {"U_B_GEN_Commander_F"};
+		helmet[] = {"H_Beret_gen_F"};
+		goggles[] = {"G_Aviator"};
+	};
 	class co : dc {};
 	
-	class mmgg : r
+	class mmgg : ar
 	{
-		class primary : spmg {};
+		//class primary : spmg {};
 	};
 	class mmgag : aar
 	{
-		packmags[] = {{"130Rnd_338_Mag",3}};
+		//packmags[] = {{"130Rnd_338_Mag",3}};
 	};
 	
 	class hmgg : r
@@ -79,7 +96,7 @@ class blu_gen_f : faction
 	class matg : r
 	{
 		class secondary : titanc {};
-		pack[] = {"B_Carryall_mcamo"};
+		pack[] = {"B_AssaultPack_blk"};
 	};
 	class matag : aar
 	{
@@ -98,14 +115,14 @@ class blu_gen_f : faction
 	class msamg : r
 	{
 		class secondary : titanaa {};
-		pack[] = {"B_Carryall_mcamo"};
+		pack[] = {"B_AssaultPack_blk"};
 	};
 	class msamag : r
 	{
 		packmags[] = {{"Titan_AA",3}};
 	};
 
-	*/
+	
 	#include "crate\crate_nato.h"
 	#include "vehicle\veh_nato.h"
 };

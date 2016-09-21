@@ -21,7 +21,7 @@ private ["_units","_unit","_faction","_known","_unitFactions","_unitClasses","_u
 // The factions of all units which should be affected
 
 //need to populate this from missionconfig?
-_unitfactions = ["","blu_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv", "LIB_RKKA", "LIB_WEHRMACHT","opf_t_f","ind_c_f","blu_gen_f","blu_ctrg_f"];
+_unitfactions = ["","blu_t_f", "rhs_faction_usarmy_wd", "rhs_faction_usarmy_d", "blu_g_f", "ind_f", "opf_f", "rhs_faction_msv", "LIB_RKKA", "LIB_WEHRMACHT","opf_t_f","ind_c_f","blu_gen_f","blu_ctrg_f"];
 
 // The default gear type picked when no corresponding entry is found in the _unitClasses array
 // Set _defaultclass to "" to let these units keep their default gear
@@ -95,7 +95,7 @@ else
 	call compile format ["if !(isnil ""bg_param_%1faction"") then {_unitfaction = _unitfactions select bg_param_%1faction};", side _x];
 	
 	// Check if the unit was already touched by the F3 Assign Gear Component
-	if (/*!(_unit getvariable ["f_var_assignGear_done", false]) && */(_unit isKindOf "Man")) then 
+	if (!(_unit getvariable ["f_var_assignGear_done", false]) && (_unit isKindOf "Man")) then 
 	{
 	
 	

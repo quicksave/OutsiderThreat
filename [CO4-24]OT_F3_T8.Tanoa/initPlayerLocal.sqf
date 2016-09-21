@@ -3,6 +3,7 @@ waituntil{ player == player };
 if (_this select 1) then
 {
 	player setpos [getmarkerpos "start", 5] call bg_fnc_ranpos;
+	player setdir (markerdir "start");
 }
 else
 {

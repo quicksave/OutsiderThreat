@@ -2,9 +2,9 @@ class blu_t_f : faction
 {
 	class base : type
 	{
-		uniform[] = {"U_B_T_Soldier_F"};
+		uniform[] = {"U_B_T_Soldier_AR_F", "U_B_T_Soldier_SL_F", "U_B_T_Soldier_SL_F", "U_B_T_Soldier_F", "U_B_T_Soldier_F", "U_B_T_Soldier_F", "U_B_T_Soldier_F", "U_B_T_Soldier_F"};
 		helmet[] = {"H_HelmetB_tna_F"};
-		vest[] = {"V_PlateCarrier2_tna_F"};
+		vest[] = {"V_PlateCarrierSpec_tna_F"};
 		pack[] = {"B_AssaultPack_tna_F"};
 		
 		class primary : mx 
@@ -17,7 +17,7 @@ class blu_t_f : faction
 	{
 		mags[] = {{"HandGrenade",2}, {"MiniGrenade",2}, {"SmokeShell", 2}};
 	};
-	/*
+	
 	class rat : r
 	{
 		class secondary : m136_hedp {};
@@ -25,7 +25,11 @@ class blu_t_f : faction
 	
 	class ar : r
 	{
-		class primary : mx_sw {};
+		uniform[] = {"U_B_T_Soldier_AR_F", "U_B_T_Soldier_SL_F"};
+		class primary : mx_sw
+		{	
+			wepname = "arifle_MX_SW_khk_F";
+		};
 	};
 	
 	class aar : r
@@ -41,21 +45,27 @@ class blu_t_f : faction
 	};
 	class dm : r
 	{
-		class primary : mxm {};
+		class primary : mxm
+		{	
+			wepname = "arifle_MXM_khk_F";
+		};
 	};
 	class gren : base
 	{
-		class primary : mx_3gl {};
+		class primary : mx_3gl 
+		{
+			wepname = "arifle_MX_GL_khk_F";
+		};
 		mags[] = {{"HandGrenade",2}, {"SmokeShell", 4}};
 	};
 	
 	class ftl : gren
 	{
-		helmet[] = {"H_HelmetSpecB_sand","H_HelmetSpecB_paint1", "H_HelmetSpecB_paint2"};
+		helmet[] = {"H_HelmetB_Enh_tna_F"};
 		
 		class primary : mx_3gl
 		{
-			optic = "optic_Arco";
+			optic = "optic_Arco_blk_F";
 		};
 	};
 	class dc : ftl {};
@@ -65,6 +75,7 @@ class blu_t_f : faction
 	{
 		class primary : spmg {};
 	};
+	
 	class mmgag : aar
 	{
 		packmags[] = {{"130Rnd_338_Mag",3}};
@@ -74,6 +85,7 @@ class blu_t_f : faction
 	{
 		pack[] = {"RHS_M2_Gun_Bag"};
 	};
+	
 	class hmgag : r
 	{
 		pack[] = {"RHS_M2_MiniTripod_Bag"};
@@ -81,8 +93,11 @@ class blu_t_f : faction
 	
 	class matg : r
 	{
-		class secondary : titanc {};
-		pack[] = {"B_Carryall_mcamo"};
+		class secondary : titanc
+		{
+			wepname = "launch_B_Titan_short_tna_F";
+		};
+		pack[] = {"B_Carryall_oli"};
 	};
 	class matag : aar
 	{
@@ -100,15 +115,18 @@ class blu_t_f : faction
 	
 	class msamg : r
 	{
-		class secondary : titanaa {};
-		pack[] = {"B_Carryall_mcamo"};
+		class secondary : titanaa 
+		{
+			wepname = "launch_B_Titan_tna_F";
+		};
+		pack[] = {"B_Carryall_oli"};
 	};
 	class msamag : r
 	{
 		packmags[] = {{"Titan_AA",3}};
 	};
 
-	*/
+	
 	#include "crate\crate_nato.h"
 	#include "vehicle\veh_nato.h"
 };

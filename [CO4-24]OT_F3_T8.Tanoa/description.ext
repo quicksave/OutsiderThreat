@@ -120,7 +120,7 @@ class cfgNotifications
 		duration = 3;
 		priority = 5;
 	};
-	
+
 	// mission notification for objectives
 	class TaskSucceeded
 	{
@@ -232,24 +232,24 @@ class Params
 		default = 0;
 		code = "f_param_caching = %1";
 	};
-	
+
 // ============================================================================================
 // mission specific
 
 	class difficulty
 	{
 		title = "Difficulty: Select number of players.";
-		values[] = {1, 2, 3, 4};
-		texts[] = {"4", "8", "12", "24"};
-		default = 1;
+		values[] = {1, 2, 3, 4, 5};
+		texts[] = {"4", "8", "12", "24", "36"};
+		default = 2;
 		code = "bg_param_difficulty = %1";
 	};
-	
+
 	class bg_param_westfaction
 	{
 		title = "Player faction";
 		values[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
-		texts[] = {"Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)","Red Army","Wehrmacht", "Viper", "Syndikat", "Genderkun", "CTRG"};
+		texts[] = {"Random","NATO (Tropic)","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT (Tropic)", "Russian (RHS)","Red Army","Wehrmacht", "Viper", "Syndikat", "Gendarmerie", "CTRG"};
 		default = 0;
 		code = "bg_param_westfaction = %1";
 	};
@@ -257,7 +257,7 @@ class Params
 	{
 		title = "Enemy faction";
 		values[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
-		texts[] = {"Random","NATO","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT", "Russian (RHS)","Red Army","Wehrmacht", "Viper", "Syndikat", "Genderkun", "CTRG"};
+		texts[] = {"Random","NATO (Tropic)","US Army (M16) (UCP/digicam)","US Army (M4) (OCP/multicam)","FIA","AAF", "CSAT (Tropic)", "Russian (RHS)","Red Army","Wehrmacht", "Viper", "Syndikat", "Gendarmerie", "CTRG"};
 		default = 0;
 		code = "bg_param_eastfaction = %1";
 	};
@@ -334,7 +334,7 @@ class CfgDebriefing
 		// pictureBackground = "";
 		// picture = "";
 		// pictureColor[] = {0.0,0.3,0.6,1};
-	};	
+	};
 };
 
 // ============================================================================================
@@ -419,7 +419,7 @@ class CfgFunctions
 			class gCache {};
 			class gUncache {};
 		};
-		class groupMarkers 
+		class groupMarkers
 		{
 			file = "f\groupMarkers";
 			class localGroupMarker{};
@@ -449,7 +449,7 @@ class CfgFunctions
 			class safety{};
 		};
 	};
-	
+
 	class bg
 	{
 		class common
@@ -465,8 +465,8 @@ class CfgFunctions
 			};
 		};
 	};
-	
-	#include <T8\FUNCTIONS.hpp>
+
+	//#include <T8\FUNCTIONS.hpp>
 };
 
 // ============================================================================================

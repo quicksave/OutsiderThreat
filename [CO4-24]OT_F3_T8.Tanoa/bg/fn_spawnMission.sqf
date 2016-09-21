@@ -21,11 +21,16 @@ private
 
 */
 
+
+
 [-2, {startloadingscreen [""];}] call CBA_fnc_globalExecute;
+
+_worldCenter = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 
 //filter markers for list of possible tgt locations
 _tgtlist = [];
 _t8_markers = [];
+spawn_blacklist = [];
 {
 	if (["mark_", _x] call bis_fnc_instring) then
 	{
@@ -35,9 +40,38 @@ _t8_markers = [];
 	{
 		_t8_markers set [count _t8_markers, _x];
 	};
+	if (["blacklist", _x] call bis_fnc_instring) then
+	{
+		spawn_blacklist set [count spawn_blacklist, _x];
+	};
 } foreach allmapmarkers;
 
-_tgtmark = _tgtlist call BIS_fnc_selectRandom;
+
+//  blacklist markers into tl and br corner coords
+{
+	_marker = _x;
+	_markerpos = markerpos _marker;
+	_markersize = markersize _marker;
+	
+	_tl_corner = 
+	[
+		(_markerpos select 0) - (0.5 * (_markersize select 0)), 
+		(_markerpos select 1) + (0.5 * (_markersize select 1)),
+		1000
+	];
+	_br_corner = 
+	[
+		(_markerpos select 0) + (0.5 * (_markersize select 0)), 
+		(_markerpos select 1) - (0.5 * (_markersize select 1)),
+		-1000
+	];
+	
+	spawn_blacklist set [_forEachIndex, [_tl_corner, _br_corner]];
+	
+} foreach spawn_blacklist; // [ [ [tl],[br] ], [ [tl],[br] ], ...  ]
+
+
+_tgtmark = selectrandom _tgtlist;
 diag_log format ["OutsiderThreat: location ""%1"" out of %2",_tgtmark, count _tgtlist];
 
 _tgtpos = getmarkerpos _tgtmark;
@@ -63,7 +97,8 @@ _tgtmark setMarkerAlpha 1;
 
 
 //get safe enemy spawn point
-while {!_safepos} do 
+// t8 handles spawning now
+/*while {!_safepos} do 
 {
 	_tgtspawnpos =
 	[
@@ -75,17 +110,27 @@ while {!_safepos} do
 		1, 
 		0, 
 		[[[-1,-1,-1],[0,0,0]]], 
-		[[1,1,1],[1,1,1]]
+		[_worldCenter,_worldCenter]
 	] call BIS_fnc_findSafePos;
+	
+	diag_log format ["OutsiderThreat: Rolled OPF spawn point : %1",_tgtspawnpos];
 	
 	if ((_tgtspawnpos select 0) != 1) then 
 	{
 		_safepos = true;
 	};
-};
+};*/
+
+_tgtspawnpos = _tgtpos;
 
 
 _safepos = false;
+_spawn_angle_array = [];
+
+for "_i" from 0 to 359 do
+{
+	_spawn_angle_array set [_i, _i];
+};
 
 // get safe player spawn point 700-850m away
 waituntil{!isnil "bg_param_difficulty"};
@@ -93,8 +138,10 @@ waituntil{!isnil "bg_param_difficulty"};
 while {!_safepos} do
 {
 
-	_playerdir = random 360;
-	_diffdistance = 25 * bg_param_difficulty + random 20;
+	_playerdir = selectrandom _spawn_angle_array; // ensures no angle is tried twice
+	_spawn_angle_array = _spawn_angle_array - [_playerdir];
+	
+	_diffdistance = 20 * bg_param_difficulty;
 	
 	_bluespawnpos =
 	[
@@ -111,13 +158,13 @@ while {!_safepos} do
 		0, 					//water: 0 cannot be in water, 2 must be in, 1 either
 		1, 					//max terrain gradient (average alt diff in m)
 		0, 					//shore: 1 must be at shore
-		[[[-1,-1,-1],[0,0,0]]], 	//opt blacklist, arrays of tl and br corners
-		[[1,1,1],[1,1,1]]	//opt default pos [def on land, def on water]
+		spawn_blacklist, 	//opt blacklist, arrays of tl and br corners
+		[_worldCenter,_worldCenter]	//opt default pos [def on land, def on water]
 	] call BIS_fnc_findSafePos;
 
-	diag_log format ["OutsiderThreat: Rolled spawn point : %1",_bluespawnpos];
+	diag_log format ["OutsiderThreat: Rolled BLU spawn point : %1",_bluespawnpos];
 
-	if ((_bluespawnpos select 0) != 1) then
+	if (!(_bluespawnpos isEqualTo _worldCenter) || count _spawn_angle_array == 0) then
 	{
 		_safepos = true;
 	};
@@ -143,6 +190,28 @@ _startmark setmarkerdir _playerdir;
 */
 
 
+switch (bg_param_difficulty) do
+{
+	default {
+		//[ target_diff_4 ] spawn T8U_fnc_Spawn;
+	};
+	case 2: {
+		//[ target_diff_8 ] spawn T8U_fnc_Spawn;
+	};
+	case 3: {
+		_tgtmark setMarkerSize [250, 250];
+		//[ target_diff_12 ] spawn T8U_fnc_Spawn;
+	};
+	case 4: {
+		_tgtmark setMarkerSize [300, 300];
+		//[ target_diff_24 ] spawn T8U_fnc_Spawn;
+	};
+	case 5: {
+		_tgtmark setMarkerSize [325, 325];
+		//[ target_diff_36 ] spawn T8U_fnc_Spawn;
+	};
+};
+
 [-2, {endloadingscreen;}] call CBA_fnc_globalExecute;
 
 /*
@@ -166,12 +235,16 @@ switch (bg_param_difficulty) do
 		[ target_diff_8 ] spawn T8U_fnc_Spawn;
 	};
 	case 3: {
-		_tgtmark setMarkerSize [250, 250];
+		//_tgtmark setMarkerSize [250, 250];
 		[ target_diff_12 ] spawn T8U_fnc_Spawn;
 	};
 	case 4: {
-		_tgtmark setMarkerSize [300, 300];
+		//_tgtmark setMarkerSize [300, 300];
 		[ target_diff_24 ] spawn T8U_fnc_Spawn;
+	};
+	case 5: {
+		//_tgtmark setMarkerSize [325, 325];
+		[ target_diff_36 ] spawn T8U_fnc_Spawn;
 	};
 };
 

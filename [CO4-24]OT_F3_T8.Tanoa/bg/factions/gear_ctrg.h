@@ -4,7 +4,7 @@ class blu_ctrg_f : faction
 	{
 		uniform[] = {"U_B_CTRG_Soldier_F","U_B_CTRG_Soldier_3_F"};
 		helmet[] = {"H_HelmetB_TI_tna_F"};
-		vest[] = {"V_TacVest_oli"};
+		vest[] = {"V_PlateCarrier2_rgr_noflag_F"};
 		pack[] = {"B_AssaultPack_rgr"};
 		goggles[] = {"G_Balaclava_TI_G_tna_F","G_Balaclava_TI_tna_F","G_Balaclava_TI_blk_F","G_Balaclava_TI_G_blk_F"};
 		
@@ -16,21 +16,19 @@ class blu_ctrg_f : faction
 		mags[] = {{"HandGrenade",2}, {"MiniGrenade",2}, {"SmokeShell", 2}};
 	};
 	
-	// incomplete
-	
-	/*class rat : r
+	class rat : r
 	{
-		class secondary : m136_hedp {};
+		class secondary : nlaw {};
 	};
 	
 	class ar : r
 	{
-		class primary : mx_sw {};
+		class primary : spar16s {};
 	};
 	
 	class aar : r
 	{
-		packmags[] = {{"100Rnd_65x39_caseless_mag",2},{"100Rnd_65x39_caseless_mag_Tracer",1}};
+		packmags[] = {{"150Rnd_556x45_Drum_Mag_F",2},{"150Rnd_556x45_Drum_Mag_Tracer_F",1}};
 		binos[] = {"Binocular"};
 	};
 	
@@ -41,21 +39,19 @@ class blu_ctrg_f : faction
 	};
 	class dm : r
 	{
-		class primary : mxm {};
+		class primary : spar17dm {};
 	};
 	class gren : base
 	{
-		class primary : mx_3gl {};
+		class primary : spar16gl {};
 		mags[] = {{"HandGrenade",2}, {"SmokeShell", 4}};
 	};
 	
 	class ftl : gren
 	{
-		helmet[] = {"H_HelmetSpecB_sand","H_HelmetSpecB_paint1", "H_HelmetSpecB_paint2"};
-		
-		class primary : mx_3gl
+		class primary : spar16gl
 		{
-			optic = "optic_Arco";
+			optic = "optic_ERCO_blk_F";
 		};
 	};
 	class dc : ftl {};
@@ -81,8 +77,11 @@ class blu_ctrg_f : faction
 	
 	class matg : r
 	{
-		class secondary : titanc {};
-		pack[] = {"B_Carryall_mcamo"};
+		class secondary : titanc
+		{
+			optic = "launch_B_Titan_short_tna_F";
+		};
+		pack[] = {"B_Carryall_oli"};
 	};
 	class matag : aar
 	{
@@ -100,15 +99,17 @@ class blu_ctrg_f : faction
 	
 	class msamg : r
 	{
-		class secondary : titanaa {};
-		pack[] = {"B_Carryall_mcamo"};
+		class secondary : titanaa 
+		{
+			wepname = "launch_B_Titan_tna_F";
+		};
+		pack[] = {"B_Carryall_oli"};
 	};
 	class msamag : r
 	{
 		packmags[] = {{"Titan_AA",3}};
 	};
-
-	*/
+	
 	#include "crate\crate_nato.h"
 	#include "vehicle\veh_nato.h"
 };

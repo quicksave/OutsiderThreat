@@ -16,7 +16,7 @@ class katiba_gl : katiba
 	wepname = "arifle_Katiba_GL_F";
 	defglmag = "1Rnd_HE_Grenade_shell";
 	extradefglmags = 5;
-	addmags[] = 
+	addmags[] =
 	{
 		{"30Rnd_65x39_caseless_green_mag_Tracer",2},
 		{"1Rnd_Smoke_Grenade_shell",3}
